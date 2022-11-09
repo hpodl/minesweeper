@@ -2,20 +2,20 @@
 
 #include <vector>
 #include <memory>
-
-
-class Field;
+#include "Field.hh"
 
 using dimension_t = unsigned short;
-using FieldP = std::shared_ptr<Field>;
 
 class _FieldVector {
     dimension_t width_, height_;
-    std::vector<FieldP> fields_;
+    std::vector<Field> fields_;
+
+    void _updateNeighbours(dimension_t x, dimension_t y);
+    void _setFields();
 public:
     _FieldVector(dimension_t width, dimension_t height);
 
-    FieldP getField(dimension_t x, dimension_t y);
+    Field &getField(dimension_t x, dimension_t y);
 
     // Type is "unsigned int" as multiplication of 2 unsigned shorts can give an unsigned int
     unsigned int size();

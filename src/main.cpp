@@ -2,8 +2,8 @@
 #include "GameBoard.hh"
 
 int main() {
-    _FieldVector board(12, 14);
-    board.populate(50);
+    _FieldVector board(4, 3);
+    board.populate(5);
     board.print();
 
     return 0;
