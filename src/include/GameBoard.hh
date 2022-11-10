@@ -4,6 +4,8 @@
 #include "Field.hh"
 
 using dimension_t = unsigned short;
+// needs to fit dimension_t*dimension_t result
+using area_t = unsigned int;
 
 struct Point {
     dimension_t x;
@@ -21,8 +23,7 @@ public:
 
     Field &getField(Point);
 
-    // "unsigned int" as multiplication of 2 unsigned shorts can give an unsigned int
-    unsigned int size();
+    area_t size();
 
     /**
      * @brief 
@@ -31,7 +32,7 @@ public:
      * @param mineCount 
      * Number of mines to be placed on the field
      */
-    void populate(unsigned int mineCount);
+    void populate(area_t mineCount);
 
     // Mostly for debugging
     void print();
@@ -56,6 +57,6 @@ class GameBoard {
 public:
     GameBoard(dimension_t width, dimension_t height) : board_(width, height){}
 
-    unsigned int size() { return board_.size(); }
+    area_t size() { return board_.size(); }
 };
 

@@ -24,9 +24,9 @@ Field &_FieldVector::getField(Point point) {
     return fields_[point.y * width_ + point.x];
 };
 
-unsigned int _FieldVector::size() { return width_ * height_; }
+area_t _FieldVector::size() { return width_ * height_; }
 
-void _FieldVector::populate(unsigned int mineCount) {
+void _FieldVector::populate(area_t mineCount) {
     static int seed = std::chrono::system_clock::now().time_since_epoch().count();
     if (mineCount > size())
         throw std::out_of_range(
@@ -40,7 +40,7 @@ void _FieldVector::populate(unsigned int mineCount) {
 }
 
 void _FieldVector::print() {
-    for (unsigned int i = 0; i < fields_.size(); ++i) {
+    for (area_t i = 0; i < fields_.size(); ++i) {
         if (!(i % width_))
             std::cout << "\n";
 
