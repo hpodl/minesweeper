@@ -27,7 +27,7 @@ Field &_FieldVector::getField(Point point) {
 area_t _FieldVector::size() { return width_ * height_; }
 
 void _FieldVector::populate(area_t mineCount) {
-    static int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    static int seed = 4;//std::chrono::system_clock::now().time_since_epoch().count();
     if (mineCount > size())
         throw std::out_of_range(
             fmt::format("Maximum mine count is {}, got {}.", size(), mineCount));
@@ -47,7 +47,9 @@ void _FieldVector::print() {
         std::cout << fields_[i].charRepresentation() << " ";
 
     }
+    std::cout << '\n';
 }
+
 
 std::vector<Point> _FieldVector::neighbourCoords(Point point) {
     // signed so it can be negative, int so it can store (max unsigned short) + 1
@@ -90,24 +92,40 @@ void _FieldVector::_setFields() {
     }
 }
 
-boost::optional<Points> GameBoard::reveal(Point point) {
-    if(board_.getField(point).isMine())
-        return boost::optional<Points>(); // None
+std::optional<Points> GameBoard::reveal(Point point) {
+    Field& field = board_.getField(point);
+    
+    Points revealed;
+    field.reveal();
+    
+    if(field.isMine())
+        return std::nullopt;
 
-    Points revealed = _reveal_internal(point);
+    if(field.getMineCount() == 0) {
+        revealed = _reveal_empty(point);
+    }
+
     revealed.push_back(point);
     return revealed;
 }
 
-Points GameBoard::_reveal_internal(Point point){
-    auto neighbours = board_.neighbourCoords(point);
+Points GameBoard::_reveal_empty(Point point) {
+    board_.getField(point).reveal();
+    
+    Points neighbours = board_.neighbourCoords(point);
     Points revealed;
-    for(Point point : neighbours) {
-        if(board_.getField(point).getMineCount() == 0) {
-            revealed.push_back(point);
-            Points recursed = _reveal_internal(point);
-            revealed.insert(revealed.end(), recursed.begin(), recursed.end());
-        }   
-    }
+
+    for(Point neighbourCoords : neighbours) {
+        Field& field = board_.getField(neighbourCoords);
+        if(!field.isRevealed()) {
+            revealed.push_back(neighbourCoords);
+            field.reveal();
+            
+            if(field.getMineCount() == 0) {
+                Points thisIteration = _reveal_empty(neighbourCoords);
+                revealed.insert(revealed.end(), thisIteration.begin(), thisIteration.end());
+            }            
+        }
+    }   
     return revealed;
 }

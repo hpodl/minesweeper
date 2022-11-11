@@ -9,8 +9,20 @@ public:
     Field() : isMine_(false), isRevealed_(false), isMarked_(false),  mineCount_(0){}
     ~Field(){};
     bool isMine(){ return isMine_; }
+    bool isRevealed() {return isRevealed_;}
+
+
+    void reveal() {
+        isRevealed_ = true;
+    }
+    
     char charRepresentation() {
-        return isMine_ ? '*' : (mineCount_ + '0');
+        if(!isRevealed_) {
+            return '@';
+        }
+        else {
+            return isMine_ ? '*' : (mineCount_ + '0');
+        }
     }
     void incrementMineCount() { ++mineCount_; }
     void setMine() { isMine_ = true; }
