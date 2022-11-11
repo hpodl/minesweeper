@@ -7,5 +7,5 @@ TEST_CASE("Sanity check.") {
 
 TEST_CASE("GameBoard initializes with correct size.", "[GameBoard, size, initialization]") {
     unsigned int width(12), height(14);
-    REQUIRE(GameBoard(width, height).size() == width*height);
+    REQUIRE(GameBoard(width, height, 30).size() == width*height);
 }
