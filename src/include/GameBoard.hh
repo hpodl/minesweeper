@@ -72,6 +72,7 @@ class GameBoard {
     Points _reveal_empty(Point point);
 public:
     GameBoard(dimension_t width, dimension_t height, area_t mineCount) : board_(width, height, mineCount){}
+    GameBoard(_FieldVector board) : board_(board){}
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields' coordinates. 
