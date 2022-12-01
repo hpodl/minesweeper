@@ -1,6 +1,15 @@
 #include <catch2/catch_all.hpp>
 #include "GameBoard.hh"
 
+class FieldVecTestable : public _FieldVector {
+    void populate(Points mines) {
+        for(auto point : mines) {
+            getField(point).setMine();
+        }
+        calculateFields();
+    }
+};
+
 TEST_CASE("Sanity check.") {
     REQUIRE(0 == 0);
 }

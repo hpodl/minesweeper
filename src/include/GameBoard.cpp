@@ -36,7 +36,7 @@ void _FieldVector::populate(area_t mineCount) {
             { field.setMine(); });
 
     std::shuffle(fields_.begin(), fields_.end(), std::default_random_engine(seed));
-    _setFields();
+    calculateFields();
 }
 
 void _FieldVector::print() {
@@ -84,7 +84,7 @@ void _FieldVector::_updateNeighbours(Point point) {
     });
 }
 
-void _FieldVector::_setFields() {
+void _FieldVector::calculateFields() {
     for (dimension_t y = 0; y < height_; ++y) {
         for (dimension_t x = 0; x < width_; ++x) {
             _updateNeighbours(Point{x, y});

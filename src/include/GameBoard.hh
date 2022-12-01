@@ -30,13 +30,14 @@ class _FieldVector {
     std::vector<Field> fields_;
 
     void _updateNeighbours(Point);
-    void _setFields();
 public:
     _FieldVector(dimension_t, dimension_t, area_t);
 
     Field &getField(Point);
 
     area_t size();
+    
+    void calculateFields();
 
     /**
      * @brief 
