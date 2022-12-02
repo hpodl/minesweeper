@@ -11,17 +11,16 @@
 
 #include "gui.hh"
 
-using PField = std::unique_ptr<Field>;
+using PField = std::unique_ptr<FieldButton>;
 
-Field::Field(int x, int y, int w, int h, FieldPos pos, const char * L = 0) :
+FieldButton::FieldButton(int x, int y, int w, int h, Point pos, const char * L = 0) :
             Fl_Button(x, y, w, h, L),
             pos(pos) {}
 
-int Field::handle(int event) {
+int FieldButton::handle(int event) {
     switch (event) {
         case FL_PUSH:
-            std::cout << pos.x_ << ", " << pos.y_ << "\n";
-            color(FL_CYAN);
+            std::cout << pos.x << ", " << pos.y << "\n";
 
             // Must be a child of MinefieldUI or this is undefined behavior
             MinefieldUI::static_callback(this, parent());
@@ -31,26 +30,27 @@ int Field::handle(int event) {
             return 0;
     }
     
-            
         return 1;
 }
 
-std::unique_ptr<Field>& MinefieldUI::getField(int x, int y) {
-    return fields_[y*w() + x];
+std::unique_ptr<FieldButton>& MinefieldUI::getField(Point point) {
+    return fields_[point.y*board.width() + point.x];
 }
 
-void MinefieldUI::real_callback(Fl_Widget* w) {
-    w->color(FL_BLACK);
-    w->redraw();
+void MinefieldUI::real_callback(FieldButton* w) {
+    reveal(w->pos);
+    redraw();
+
 }
 
-void MinefieldUI::static_callback(Fl_Widget* w, void* data) {
+void MinefieldUI::static_callback(FieldButton* w, void* data) {
     ((MinefieldUI*)data)->real_callback(w);
 }
 
 MinefieldUI::MinefieldUI(int x, int y, int w, int h) :
-        Fl_Group(x,y,w,h) {}   
-
+        Fl_Group(x,y,w,h),
+        board(0,0,0)
+        {}
 
 /**
  * @brief Renders an width by height board of fields
@@ -58,16 +58,18 @@ MinefieldUI::MinefieldUI(int x, int y, int w, int h) :
  * @param width horizontal fields
  * @param height vertical fields
 */
-void MinefieldUI::render_minefield(int width, int height) {
+void MinefieldUI::create_minefield(dimension_t width, dimension_t height, area_t mineCount) {
     fields_.reserve(width*height);
+    board.generate(width, height, mineCount);
     
     int sideLen = w()/width > h()/height ? h()/height : w()/width;
 
     
     begin();
-    for (int xc = 0; xc < width; ++xc) 
-        for(int yc = 0; yc < height; ++yc){
-            std::unique_ptr<Field> button = std::make_unique<Field>(this->x() + xc*sideLen, this->y() + yc*sideLen, sideLen, sideLen, FieldPos{xc, yc});
+    for(dimension_t yc = 0; yc < height; ++yc)
+        for (dimension_t xc = 0; xc < width; ++xc) {
+            std::unique_ptr<FieldButton> button = std::make_unique<FieldButton>(
+                this->x() + xc*sideLen, this->y() + yc*sideLen, sideLen, sideLen, Point{xc, yc});
             button->box(FL_UP_BOX);
             fields_.push_back(std::move(button));
         }
@@ -76,11 +78,17 @@ void MinefieldUI::render_minefield(int width, int height) {
     redraw();
 }
 
-    // void redraw() {
-    //     for (auto &field : fields) 
-    //         field->redraw();
-    // }
+void MinefieldUI::reveal(Point point) {
+    std::cout << point.x << "," << point.y << "\n";
+    getField(point)->color(FL_YELLOW);
+    Points revealed =  board.reveal(point);
+    for(auto revealedPoint : revealed) {
+        std::cout << revealedPoint.x << "," << revealedPoint.y << "\n";
+        getField(revealedPoint)->color(FL_GREEN);
+    }
+    board.print();
 
+}
 
 
 
@@ -88,7 +96,7 @@ int main(int argc, char **argv) {
     Fl_Double_Window wind(640,480);
     
     MinefieldUI field(20, 10, 600, 460);
-    field.render_minefield(15, 15);
+    field.create_minefield(15, 15, 30);
     wind.show();
 
     return Fl::run();

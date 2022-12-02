@@ -35,6 +35,10 @@ public:
 
     Field &getField(Point);
 
+    Point shape() {
+        return {width_, height_};
+    }
+
     area_t size();
     
     void calculateFields();
@@ -74,6 +78,7 @@ class GameBoard {
 public:
     GameBoard(dimension_t width, dimension_t height, area_t mineCount) : board_(width, height, mineCount){}
     GameBoard(_FieldVector board) : board_(board){}
+    GameBoard() : board_(0,0,0) {};
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields' coordinates. 
@@ -82,9 +87,20 @@ public:
      * @param point - coordinates of field to be revealed
      * @return boost::optional<Points>
      */
-    std::optional<Points> reveal(Point point);
+    Points reveal(Point point);
 
+    /**
+     * @brief Creates a new minefield and fills it with mines
+     * 
+     * @param width
+     * @param height 
+     * @param mineCount 
+     */
+    void generate(dimension_t width, dimension_t height, area_t mineCount);
     
+    dimension_t width()  { return board_.shape().x; };
+    dimension_t height() { return board_.shape().y; };
+
     area_t size() { return board_.size(); }
 
     void print() { board_.print(); };

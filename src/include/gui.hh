@@ -1,3 +1,5 @@
+#pragma once
+
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Window.H>
@@ -9,28 +11,27 @@
 #include <vector>
 #include <iostream>
 
-struct FieldPos {
-    int x_, y_;
-};
+#include "GameBoard.hh"
 
-class Field : public Fl_Button {
+class FieldButton : public Fl_Button {
     int handle(int event) override;
 
     public:
-        FieldPos pos;
-        Field(int x, int y, int w, int h, FieldPos pos, const char * L);
+        Point pos;
+        FieldButton(int x, int y, int w, int h, Point pos, const char * L);
 };
 
 
 class MinefieldUI : public Fl_Group {
-    std::vector<std::unique_ptr<Field>> fields_;
+    std::vector<std::unique_ptr<FieldButton>> fields_;
+    GameBoard board;
 
-    std::unique_ptr<Field>& getField(int x, int y);
+    std::unique_ptr<FieldButton>& getField(Point point);
     
-    void real_callback(Fl_Widget* w);
+    void real_callback(FieldButton* w);
 
 public:
-    static void static_callback(Fl_Widget* w, void* data);
+    static void static_callback(FieldButton* w, void* data);
 
     MinefieldUI(int x, int y, int w, int h);
     
@@ -40,6 +41,8 @@ public:
      * @param width horizontal fields
      * @param height vertical fields
      */
-    void render_minefield(int width, int height);
+    void create_minefield(dimension_t width, dimension_t height, area_t mineCount);
 
+
+    void reveal(Point point);
 };
