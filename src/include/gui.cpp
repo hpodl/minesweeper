@@ -82,13 +82,16 @@ void MinefieldUI::reveal(Point point) {
     std::cout << point.x << "," << point.y << "\n";
     Points revealed =  board.reveal(point);
     for(auto revealedPoint : revealed) {
-        std::cout << revealedPoint.x << "," << revealedPoint.y << "\n";
-        getField(revealedPoint)->box(FL_FLAT_BOX);
+        Field revealedField = board.getField(revealedPoint);
+        auto &revealedUI = getField(revealedPoint);
 
-        auto revealedField = board.getField(revealedPoint);
+        revealedUI->box(FL_FLAT_BOX);
+        if(revealedField.isMine()) {
+            revealedUI->color(FL_RED);
+        }
+
         const char lab[] = {revealedField.charRepresentation(), '\0'};     
-
-        getField(revealedPoint)->copy_label(lab);
+        revealedUI->copy_label(lab);
 
     }
     board.print();
