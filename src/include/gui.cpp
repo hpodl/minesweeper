@@ -20,8 +20,6 @@ FieldButton::FieldButton(int x, int y, int w, int h, Point pos, const char * L =
 int FieldButton::handle(int event) {
     switch (event) {
         case FL_PUSH:
-            std::cout << pos.x << ", " << pos.y << "\n";
-
             // Must be a child of MinefieldUI or this is undefined behavior
             MinefieldUI::static_callback(this, parent());
         break;
@@ -79,7 +77,6 @@ void MinefieldUI::create_minefield(dimension_t width, dimension_t height, area_t
 }
 
 void MinefieldUI::reveal(Point point) {
-    std::cout << point.x << "," << point.y << "\n";
     Points revealed =  board.reveal(point);
     for(auto revealedPoint : revealed) {
         Field revealedField = board.getField(revealedPoint);
@@ -94,6 +91,4 @@ void MinefieldUI::reveal(Point point) {
         revealedUI->copy_label(lab);
 
     }
-    board.print();
-
 }
