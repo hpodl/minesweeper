@@ -15,8 +15,7 @@ _FieldVector::_FieldVector(dimension_t x, dimension_t y, area_t mineCount) :
     this->populate(mineCount);
 };
 
-Field &_FieldVector::getField(Point point)
-{
+Field &_FieldVector::getField(Point point) {
     if (point.x >= width_)
         throw std::out_of_range(
             fmt::format("Maximum width is {}, got {}.", width_, point.x));
@@ -30,8 +29,7 @@ Field &_FieldVector::getField(Point point)
 
 area_t _FieldVector::size() { return width_ * height_; }
 
-void _FieldVector::populate(area_t mineCount)
-{
+void _FieldVector::populate(area_t mineCount) {
     static int seed = 4; // std::chrono::system_clock::now().time_since_epoch().count();
     if (mineCount > size())
         throw std::out_of_range(
@@ -44,10 +42,8 @@ void _FieldVector::populate(area_t mineCount)
     calculateFields();
 }
 
-void _FieldVector::print()
-{
-    for (area_t i = 0; i < fields_.size(); ++i)
-    {
+void _FieldVector::print() {
+    for (area_t i = 0; i < fields_.size(); ++i) {
         if (!(i % width_))
             std::cout << "\n";
 
@@ -56,8 +52,7 @@ void _FieldVector::print()
     std::cout << '\n';
 }
 
-std::vector<Point> _FieldVector::neighbourCoords(Point point)
-{
+std::vector<Point> _FieldVector::neighbourCoords(Point point) {
     // signed so it can be negative, int so it can store (max unsigned short) + 1
     std::vector<int> neighb_x{point.x - 1, point.x, point.x + 1};
     std::vector<int> neighb_y{point.y - 1, point.y, point.y + 1};
@@ -68,8 +63,7 @@ std::vector<Point> _FieldVector::neighbourCoords(Point point)
         if (y < 0 || y >= height_)
             continue;
 
-        for (auto x : neighb_x)
-        {
+        for (auto x : neighb_x) {
             if (x < 0 || x >= width_)
                 continue;
             // this cast is safe, since we made sure the number is positive and within dimension_t bounds
@@ -80,10 +74,8 @@ std::vector<Point> _FieldVector::neighbourCoords(Point point)
     return neighbours;
 }
 
-void _FieldVector::_updateNeighbours(Point point)
-{
-    if (!getField(point).isMine())
-    {
+void _FieldVector::_updateNeighbours(Point point) {
+    if (!getField(point).isMine()) {
         return;
     }
 
@@ -92,19 +84,13 @@ void _FieldVector::_updateNeighbours(Point point)
                   { this->getField(point).incrementMineCount(); });
 }
 
-void _FieldVector::calculateFields()
-{
+void _FieldVector::calculateFields() {
     for (dimension_t y = 0; y < height_; ++y)
-    {
         for (dimension_t x = 0; x < width_; ++x)
-        {
             _updateNeighbours(Point{x, y});
-        }
-    }
 }
 
-Points GameBoard::reveal(Point point)
-{
+Points GameBoard::reveal(Point point) {
     Field &field = board_.getField(point);
 
     Points revealed;
@@ -113,8 +99,7 @@ Points GameBoard::reveal(Point point)
     // if (field.isMine())
     //     return std::nullopt;
 
-    if (field.getMineCount() == 0)
-    {
+    if (field.getMineCount() == 0) {
         revealed = _reveal_empty(point);
     }
 
@@ -122,29 +107,24 @@ Points GameBoard::reveal(Point point)
     return revealed;
 }
 
-Points GameBoard::_reveal_empty(Point point)
-{
+Points GameBoard::_reveal_empty(Point point) {
     board_.getField(point).reveal();
 
     Points neighbours = board_.neighbourCoords(point);
     Points revealed;
 
-    for (Point neighbourCoords : neighbours)
-    {
+    for (Point neighbourCoords : neighbours) {
         Field &field = board_.getField(neighbourCoords);
-        if (!field.isRevealed())
-        {
+        if (!field.isRevealed()) {
             revealed.push_back(neighbourCoords);
             field.reveal();
 
-            if (field.getMineCount() == 0)
-            {
+            if (field.getMineCount() == 0) {
                 Points thisIteration = _reveal_empty(neighbourCoords);
                 revealed.insert(revealed.end(), thisIteration.begin(), thisIteration.end());
             }
         }
     }
-
     return revealed;
 }
 
