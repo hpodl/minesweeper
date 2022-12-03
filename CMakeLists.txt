@@ -1,16 +1,21 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.15.0)
 project(Minesweeper VERSION 0.1)
 
+FIND_PACKAGE(FLTK REQUIRED)
 
 
-set (CMAKE_CXX_STANDARD 20)
-add_compile_options(-Wall -Wextra -pedantic -Werror)
-include_directories(./src/include)
+SET (CMAKE_CXX_STANDARD 20)
+ADD_COMPILE_OPTIONS(-Wall -Wextra -pedantic -Werror )
+INCLUDE_DIRECTORIES(./src/include)
 
-enable_testing()
 
-add_subdirectory(./src/include)
-add_subdirectory(./tests)
+ENABLE_TESTING()
 
-add_executable(Minesweeper ./src/main.cpp)
-target_link_libraries(Minesweeper Field GameBoard)
+ADD_SUBDIRECTORY(./src/include)
+ADD_SUBDIRECTORY(./tests)
+
+ADD_EXECUTABLE(Minesweeper ./src/main.cpp)
+
+TARGET_LINK_LIBRARIES(Minesweeper Gui Field GameBoard)
+TARGET_LINK_LIBRARIES(Minesweeper ${FLTK_LIBRARIES})
+

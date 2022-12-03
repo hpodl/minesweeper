@@ -1,3 +1,3 @@
-add_library(Field Field.hh Field.cpp)
-add_library(GameBoard GameBoard.hh GameBoard.cpp)
-# add_library(Gui gui.hh gui.cpp)
+ADD_LIBRARY(Field Field.hh Field.cpp)
+ADD_LIBRARY(GameBoard GameBoard.hh GameBoard.cpp)
+ADD_LIBRARY(Gui gui.hh gui.cpp)
