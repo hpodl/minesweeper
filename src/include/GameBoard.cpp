@@ -97,9 +97,6 @@ Points GameBoard::reveal(Point point) {
     Points revealed;
     field.reveal();
 
-    // if (field.isMine())
-    //     return std::nullopt;
-
     if (field.getMineCount() == 0) {
         revealed = _reveal_empty(point);
     }
@@ -123,6 +120,27 @@ Points GameBoard::_reveal_empty(Point point) {
             if (field.getMineCount() == 0) {
                 Points thisIteration = _reveal_empty(neighbourCoords);
                 revealed.insert(revealed.end(), thisIteration.begin(), thisIteration.end());
+            }
+        }
+    }
+    return revealed;
+}
+
+
+Points GameBoard::chord(Point point) {
+    short minesAround = getField(point).getMineCount();
+    short marksAround(0);
+    for(Point neighbourCoord : board_.neighbourCoords(point)) {
+        marksAround += getField(neighbourCoord).isMarked();
+    }
+
+    Points revealed;
+    if(marksAround >= minesAround) {
+        for(Point neighbourCoord : board_.neighbourCoords(point)) {
+            auto &field = getField(neighbourCoord);
+            if(!field.isMarked()) {
+                field.reveal();
+                revealed.push_back(neighbourCoord);
             }
         }
     }
