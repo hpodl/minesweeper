@@ -130,6 +130,27 @@ Points GameBoard::_reveal_empty(Point point) {
 }
 
 
+Points GameBoard::chord(Point point) {
+    short minesAround = getField(point).getMineCount();
+    short marksAround(0);
+    for(Point neighbourCoord : board_.neighbourCoords(point)) {
+        marksAround += getField(neighbourCoord).isMarked();
+    }
+
+    Points revealed;
+    if(marksAround >= minesAround) {
+        for(Point neighbourCoord : board_.neighbourCoords(point)) {
+            auto &field = getField(neighbourCoord);
+            if(!field.isMarked()) {
+                field.reveal();
+                revealed.push_back(neighbourCoord);
+            }
+        }
+    }
+    return revealed;
+}
+
+
 void GameBoard::generate(dimension_t width, dimension_t height, area_t mineCount) {
     board_ = _FieldVector(width, height, mineCount);
 }

@@ -94,6 +94,8 @@ public:
     Points reveal(Point point);
     void mark(Point point);
 
+    Points chord(Point point);
+
     /**
      * @brief Creates a new minefield and fills it with mines
      * 
