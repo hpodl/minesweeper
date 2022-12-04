@@ -17,37 +17,32 @@ FieldButton::FieldButton(int x, int y, int w, int h, Point pos, const char * L =
             Fl_Button(x, y, w, h, L),
             pos(pos) {}
 
-int FieldButton::handle(int event) {
-    switch (event) {
-        case FL_PUSH:
-            // Must be a child of MinefieldUI or this is undefined behavior
-            MinefieldUI::static_callback(this, parent());
-        break;
 
-        default:
-            return 0;
-    }
-    
-        return 1;
+
+void FieldButton::onRevealStyle(const char* representation) {
+    copy_label(representation);
+    labelcolor(FL_BLACK);
 }
 
-std::unique_ptr<FieldButton>& MinefieldUI::getField(Point point) {
-    return fields_[point.y*board.width() + point.x];
+void FieldButton::onMarkStyle() {
+    label("@4search");
+    labelcolor(FL_RED);
 }
 
-void MinefieldUI::real_callback(FieldButton* w) {
-    reveal(w->pos);
-    redraw();
-
+void FieldButton::defaultStyle() {
+    color(FL_GRAY);
+    label(" ");
 }
 
-void MinefieldUI::static_callback(FieldButton* w, void* data) {
-    ((MinefieldUI*)data)->real_callback(w);
+
+
+std::unique_ptr<FieldButton>& MinefieldUI::_getButton(Point point) {
+    return _fields[point.y*_board.width() + point.x];
 }
 
 MinefieldUI::MinefieldUI(int x, int y, int w, int h) :
         Fl_Group(x,y,w,h),
-        board(0,0,0)
+        _board(0,0,0)
         {}
 
 /**
@@ -57,10 +52,11 @@ MinefieldUI::MinefieldUI(int x, int y, int w, int h) :
  * @param height vertical fields
 */
 void MinefieldUI::create_minefield(dimension_t width, dimension_t height, area_t mineCount) {
-    fields_.reserve(width*height);
-    board.generate(width, height, mineCount);
+    _fields.reserve(width*height);
+    _board.generate(width, height, mineCount);
     
     int sideLen = w()/width > h()/height ? h()/height : w()/width;
+    _buttonSize = sideLen;
 
     
     begin();
@@ -69,7 +65,7 @@ void MinefieldUI::create_minefield(dimension_t width, dimension_t height, area_t
             std::unique_ptr<FieldButton> button = std::make_unique<FieldButton>(
                 this->x() + xc*sideLen, this->y() + yc*sideLen, sideLen, sideLen, Point{xc, yc});
             button->box(FL_UP_BOX);
-            fields_.push_back(std::move(button));
+            _fields.push_back(std::move(button));
         }
     end();
 
@@ -77,18 +73,89 @@ void MinefieldUI::create_minefield(dimension_t width, dimension_t height, area_t
 }
 
 void MinefieldUI::reveal(Point point) {
-    Points revealed =  board.reveal(point);
+    Points revealed =  _board.reveal(point);
     for(auto revealedPoint : revealed) {
-        Field revealedField = board.getField(revealedPoint);
-        auto &revealedUI = getField(revealedPoint);
+        Field revealedField = _board.getField(revealedPoint);
+        auto &revealedButton = _getButton(revealedPoint);
 
-        revealedUI->box(FL_FLAT_BOX);
+        revealedButton->box(FL_FLAT_BOX);
         if(revealedField.isMine()) {
-            revealedUI->color(FL_RED);
+            revealedButton->color(FL_RED);
         }
 
-        const char lab[] = {revealedField.charRepresentation(), '\0'};     
-        revealedUI->copy_label(lab);
+        const char newLabel[] = { revealedField.charRepresentation(), '\0' };
+        revealedButton->onRevealStyle(newLabel);     
 
     }
+}
+
+
+int MinefieldUI::handle(int event) {
+    switch(event) {
+        case FL_PUSH:
+            _handle_mouse_click();
+        break;
+
+        case FL_KEYUP:
+            if(*Fl::event_text() == 'r') {
+                reset(_board.width(), _board.height(), _board.mineCount());
+            }
+        break;
+
+    }
+
+    return -1;
+}
+
+void MinefieldUI::reset(dimension_t newWidth, dimension_t newHeight, area_t mineCount) {
+    _board = GameBoard(newWidth, newHeight, mineCount);
+    _fields.clear();  
+    create_minefield(newWidth, newHeight, mineCount);      
+}
+
+
+void MinefieldUI::_handle_mouse_click() {
+    int mouseButton = Fl::event_button();
+    int clickedX = (Fl::event_x() - x())/_buttonSize;
+    int clickedY = (Fl::event_y() - y())/_buttonSize;
+
+    if(clickedX >= _board.width() || clickedY >= _board.height() ) {
+        return;
+    }
+
+    Point clickedPos = Point{static_cast<dimension_t>(clickedX), static_cast<dimension_t>(clickedY)};
+
+    PField &clickedButton = _getButton(clickedPos);
+    auto &clickedField = _board.getField(clickedPos);
+
+    std::cout << Fl::event_x() - x() << ", " << Fl::event_y() - y() << "\n";
+    std::cout << clickedX << ", " << clickedY << "\n";
+
+    switch(mouseButton) {
+        case(FL_LEFT_MOUSE):
+            if(!clickedField.isMarked() && !clickedField.isRevealed()) {
+                reveal(clickedPos);
+            }
+        break;
+       
+        case(FL_RIGHT_MOUSE):
+            if(!clickedField.isRevealed()) {
+                if (!clickedField.isMarked()){
+                    clickedField.mark(true);
+                    clickedButton->onMarkStyle();
+                }
+        
+                else {
+                    clickedField.mark(false);
+                    clickedButton->defaultStyle();
+                }
+            }
+
+        break;
+
+        case(FL_MIDDLE_MOUSE):
+
+        break;
+    }
+
 }

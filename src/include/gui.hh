@@ -14,24 +14,30 @@
 #include "GameBoard.hh"
 
 class FieldButton : public Fl_Button {
-    int handle(int event) override;
-
     public:
         Point pos;
         FieldButton(int x, int y, int w, int h, Point pos, const char * L);
+
+        
+    void onRevealStyle(const char* representation);
+
+    void onMarkStyle();
+
+    void defaultStyle();
 };
 
 
 class MinefieldUI : public Fl_Group {
-    std::vector<std::unique_ptr<FieldButton>> fields_;
-    GameBoard board;
+    std::vector<std::unique_ptr<FieldButton>> _fields;
+    GameBoard _board;
 
-    std::unique_ptr<FieldButton>& getField(Point point);
-    
-    void real_callback(FieldButton* w);
-
+    std::unique_ptr<FieldButton>& _getButton(Point point);
+    void _handle_mouse_click();
+    int _buttonSize;
 public:
-    static void static_callback(FieldButton* w, void* data);
+    int handle(int event) override;
+
+    void reset(dimension_t newWidth, dimension_t newHeight, area_t mineCount);
 
     MinefieldUI(int x, int y, int w, int h);
     
@@ -44,5 +50,8 @@ public:
     void create_minefield(dimension_t width, dimension_t height, area_t mineCount);
 
 
+
     void reveal(Point point);
+
+    void mark(Point point);
 };

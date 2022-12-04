@@ -30,7 +30,8 @@ Field &_FieldVector::getField(Point point) {
 area_t _FieldVector::size() { return width_ * height_; }
 
 void _FieldVector::populate(area_t mineCount) {
-    static int seed = 4; // std::chrono::system_clock::now().time_since_epoch().count();
+    int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    
     if (mineCount > size())
         throw std::out_of_range(
             fmt::format("Maximum mine count is {}, got {}.", size(), mineCount));

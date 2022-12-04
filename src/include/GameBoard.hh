@@ -39,6 +39,10 @@ public:
         return {width_, height_};
     }
 
+    area_t mineCount() {
+        return mineCount_;
+    }
+
     area_t size();
     
     void calculateFields();
@@ -88,6 +92,7 @@ public:
      * @return boost::optional<Points>
      */
     Points reveal(Point point);
+    void mark(Point point);
 
     /**
      * @brief Creates a new minefield and fills it with mines
@@ -100,6 +105,7 @@ public:
     
     dimension_t width()  { return board_.shape().x; };
     dimension_t height() { return board_.shape().y; };
+    area_t mineCount() { return board_.mineCount(); };
 
     area_t size() { return board_.size(); }
 

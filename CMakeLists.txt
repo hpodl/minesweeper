@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15.0)
-project(Minesweeper VERSION 0.1)
+project(Minesweeper VERSION 0.2)
 
 FIND_PACKAGE(FLTK REQUIRED)
 

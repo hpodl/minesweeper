@@ -5,15 +5,22 @@ class Field {
     bool isRevealed_;
     bool isMarked_;
     unsigned short mineCount_;
+
 public:
     Field() : isMine_(false), isRevealed_(false), isMarked_(false),  mineCount_(0){}
     ~Field(){};
-    bool isMine(){ return isMine_; }
-    bool isRevealed() {return isRevealed_;}
 
+    bool isMine(){ return isMine_; }
+    bool isRevealed() { return isRevealed_; }
+    bool isMarked() { return isMarked_; }
+    
+    void mark(bool mark) {
+        isMarked_ = mark;
+    }
 
     void reveal() {
         isRevealed_ = true;
+        isMarked_ = false;
     }
     
     char charRepresentation() {
