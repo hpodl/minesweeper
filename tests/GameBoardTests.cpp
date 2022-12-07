@@ -12,7 +12,7 @@ class FieldVecTestable : public _FieldVector {
         for(auto point : mines) {
             getField(point).setMine();
         }
-        calculateFields();
+        recalculateNeighbours();
     }
 };
 
@@ -23,6 +23,14 @@ TEST_CASE("Sanity check.") {
 TEST_CASE("GameBoard initializes with correct size.", "[GameBoard, size, initialization]") {
     unsigned int width(12), height(14);
     REQUIRE(GameBoard(width, height, 30).size() == width*height);
+}
+
+TEST_CASE("GameBoard height and width are set correctly", "[GameBoard, width, height]") {
+    unsigned int width(12), height(14);
+    auto board = GameBoard(width, height, 30);
+    
+    REQUIRE(board.width() == width);
+    REQUIRE(board.height() == height);
 }
 
 TEST_CASE("GameBoard correctly reveals recursively.", "[GameBoard, reveal, recursive]") {
