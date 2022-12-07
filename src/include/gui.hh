@@ -14,10 +14,8 @@
 #include "GameBoard.hh"
 
 class FieldButton : public Fl_Button {
-    public:
-        Point pos;
-        FieldButton(int x, int y, int w, int h, Point pos, const char * L);
-
+public:
+    FieldButton(int x, int y, int w, int h, const char * L);
         
     void onRevealStyle(const char* representation);
 
@@ -26,17 +24,27 @@ class FieldButton : public Fl_Button {
     void defaultStyle();
 };
 
-
+/**
+ * @brief GUI interface for the GameBoard
+ * 
+ */
 class MinefieldUI : public Fl_Group {
-    std::vector<std::unique_ptr<FieldButton>> _fields;
-    GameBoard _board;
+    std::vector<std::unique_ptr<FieldButton>> fields_;
+    GameBoard board_;
+    int buttonSize_;
 
     std::unique_ptr<FieldButton>& _getButton(Point point);
     void _handle_mouse_click();
-    int _buttonSize;
 public:
     int handle(int event) override;
 
+    /**
+     * @brief Generates a new gameboard and updates the gui accordingly
+     * 
+     * @param newWidth  - number of vertical fields
+     * @param newHeight - number of horizontal fields
+     * @param mineCount - number of mines
+     */
     void reset(dimension_t newWidth, dimension_t newHeight, area_t mineCount);
 
     MinefieldUI(int x, int y, int w, int h);
@@ -50,8 +58,18 @@ public:
     void create_minefield(dimension_t width, dimension_t height, area_t mineCount);
 
 
-
+    /**
+     * @brief Handles the logic behind revealing a field, recurses if neighbours are 0
+     * 
+     * @param point coordinates of the point to be revealed
+     */
     void reveal(Point point);
+
+    /**
+     * @brief Marks a point as a mine, disabling the ability to reveal it manually and via chording
+     * 
+     * @param point coordinates of the point to be marked
+     */
 
     void mark(Point point);
 };
