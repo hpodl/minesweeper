@@ -17,7 +17,12 @@ public:
     bool isMine(){ return isMine_; }
     bool isRevealed() { return isRevealed_; }
     bool isMarked() { return isMarked_; }
-    
+
+   /**
+     * @brief Sets internal variable whether the field is marked
+     * 
+     * @param mark true if marked, else false
+     */   
     void mark(bool mark) {
         isMarked_ = mark;
     }
@@ -31,10 +36,19 @@ public:
         isMarked_ = false;
     }
     
+    /**
+     * @brief Char representation of a field from a POV of a player
+     * 
+     * @return char - the representation
+     */
     char charRepresentation() {
         if(!isRevealed_) {
             return '@';
         }
+        if(isMarked_) {
+            return 'M';
+        }
+
         else {
             return isMine_ ? '*' : (mineCount_ + '0');
         }

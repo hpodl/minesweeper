@@ -45,7 +45,7 @@ public:
 
     area_t size();
     
-    void calculateFields();
+    void recalculateNeighbours();
 
     /**
      * @brief 
@@ -56,7 +56,10 @@ public:
      */
     void populate(area_t mineCount);
 
-    // Mostly for debugging
+    /**
+     * @brief Utility/debugging method displaying the board with fields represented by their char representation 
+     * 
+     */
     void print();
 
     /**
@@ -94,6 +97,13 @@ public:
     Points reveal(Point point);
     void mark(Point point);
 
+
+    /**
+     * @brief Handles chording logic
+     * 
+     * @param point coordinates of chording origin
+     * @return Points points revealed via chording
+     */
     Points chord(Point point);
 
     /**
