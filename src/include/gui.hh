@@ -13,6 +13,10 @@
 
 #include "GameBoard.hh"
 
+/**
+ * @brief Fl_Button wrapper with an overrideable style changing methods
+ * 
+ */
 class FieldButton : public Fl_Button {
 public:
     FieldButton(int x, int y, int w, int h, const char * L);

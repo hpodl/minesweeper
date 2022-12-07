@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @brief Represents a single field on the gameboard
+ * 
+ */
 class Field {
     bool isMine_;
     bool isRevealed_;
@@ -18,6 +22,10 @@ public:
         isMarked_ = mark;
     }
 
+    /**
+     * @brief Sets internal variable signalling that the field is revealed
+     * 
+     */
     void reveal() {
         isRevealed_ = true;
         isMarked_ = false;
@@ -31,7 +39,23 @@ public:
             return isMine_ ? '*' : (mineCount_ + '0');
         }
     }
+
+    
+    /**
+     * @brief Increments local variable representing the number of neighbouring mines
+     * 
+     */
     void incrementMineCount() { ++mineCount_; }
+    
+    /**
+     * @brief Sets internal variable signalling that the field contains a mine
+     * 
+     */
     void setMine() { isMine_ = true; }
+    
+    /**
+     * @brief Returns a number of neighbouring mines
+     * 
+     */
     unsigned short getMineCount() { return mineCount_; }
 };
