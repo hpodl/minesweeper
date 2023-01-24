@@ -57,17 +57,17 @@ class _FieldVector {
 
     /**
      * @brief Utility/debugging method displaying the board with fields
-     * represented by their char representation
+     * using their char representation
      *
      */
     void print();
 
     /**
      * @brief
-     * Vector of points representing the coordinates of
+     * Returns a vector of neighbouring `Point`s
      *
      * @param point
-     * point to get the neighbours of
+     * Point to get the neighbours of
      *
      * @return std::vector<Point>
      */
@@ -81,21 +81,21 @@ class _FieldVector {
  */
 class GameBoard {
     _FieldVector board_;
+    bool mineHit_;
 
     Points _reveal_empty(Point point);
-
   public:
     GameBoard(dimension_t width, dimension_t height, area_t mineCount)
-        : board_(width, height, mineCount) {}
+        : board_(width, height, mineCount), mineHit_(false) {}
     GameBoard(_FieldVector board) : board_(board) {}
     GameBoard() : board_(0, 0, 0){};
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields'
-     * coordinates. On mine hit, returns std::nullopt
+     * coordinates.
      * @details
      * @param point - coordinates of field to be revealed
-     * @return boost::optional<Points>
+     * @return std::vector<Point>
      */
     Points reveal(Point point);
     void mark(Point point);
