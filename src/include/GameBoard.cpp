@@ -1,8 +1,8 @@
 #include <algorithm>
+#include <chrono>
 #include <exception>
 #include <iostream>
 #include <random>
-#include <chrono>
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h>
@@ -10,8 +10,8 @@
 #include "Field.hh"
 #include "GameBoard.hh"
 
-_FieldVector::_FieldVector(dimension_t x, dimension_t y, area_t mineCount) : 
-    width_(x), height_(y), mineCount_(mineCount), fields_(x * y, Field()) {
+_FieldVector::_FieldVector(dimension_t x, dimension_t y, area_t mineCount)
+    : width_(x), height_(y), mineCount_(mineCount), fields_(x * y, Field()) {
     this->populate(mineCount);
 };
 
@@ -31,15 +31,16 @@ area_t _FieldVector::size() { return width_ * height_; }
 
 void _FieldVector::populate(area_t mineCount) {
     int seed = std::chrono::system_clock::now().time_since_epoch().count();
-    
+
     if (mineCount > size())
-        throw std::out_of_range(
-            fmt::format("Maximum mine count is {}, got {}.", size(), mineCount));
+        throw std::out_of_range(fmt::format(
+            "Maximum mine count is {}, got {}.", size(), mineCount));
 
-    std::for_each(fields_.begin(), (fields_.begin() + mineCount), [](auto &field)
-                  { field.setMine(); });
+    std::for_each(fields_.begin(), (fields_.begin() + mineCount),
+        [](auto &field) { field.setMine(); });
 
-    std::shuffle(fields_.begin(), fields_.end(), std::default_random_engine(seed));
+    std::shuffle(
+        fields_.begin(), fields_.end(), std::default_random_engine(seed));
     recalculateNeighbours();
 }
 
@@ -54,21 +55,23 @@ void _FieldVector::print() {
 }
 
 std::vector<Point> _FieldVector::neighbourCoords(Point point) {
-    // signed so it can be negative, int so it can store (max unsigned short) + 1
+    // signed so it can be negative, int so it can store (max unsigned short) +
+    // 1
     std::vector<int> neighb_x{point.x - 1, point.x, point.x + 1};
     std::vector<int> neighb_y{point.y - 1, point.y, point.y + 1};
 
     std::vector<Point> neighbours;
-    for (auto y : neighb_y)
-    {
+    for (auto y : neighb_y) {
         if (y < 0 || y >= height_)
             continue;
 
         for (auto x : neighb_x) {
             if (x < 0 || x >= width_)
                 continue;
-            // this cast is safe, since we made sure the number is positive and within dimension_t bounds
-            neighbours.push_back(Point{static_cast<dimension_t>(x), static_cast<dimension_t>(y)});
+            // this cast is safe, since we made sure the number is positive and
+            // within dimension_t bounds
+            neighbours.push_back(Point{
+                static_cast<dimension_t>(x), static_cast<dimension_t>(y)});
         }
     }
 
@@ -81,8 +84,8 @@ void _FieldVector::_updateNeighbours(Point point) {
     }
 
     auto neighbours = neighbourCoords(point);
-    std::for_each(neighbours.begin(), neighbours.end(), [this](auto point)
-                  { this->getField(point).incrementMineCount(); });
+    std::for_each(neighbours.begin(), neighbours.end(),
+        [this](auto point) { this->getField(point).incrementMineCount(); });
 }
 
 void _FieldVector::recalculateNeighbours() {
@@ -119,26 +122,27 @@ Points GameBoard::_reveal_empty(Point point) {
 
             if (field.getMineCount() == 0) {
                 Points thisIteration = _reveal_empty(neighbourCoords);
-                revealed.insert(revealed.end(), thisIteration.begin(), thisIteration.end());
+                revealed.insert(
+                    revealed.end(), thisIteration.begin(), thisIteration.end());
             }
         }
     }
     return revealed;
 }
 
-
 Points GameBoard::chord(Point point) {
     short minesAround = getField(point).getMineCount();
-    short marksAround(0);
-    for(Point neighbourCoord : board_.neighbourCoords(point)) {
-        marksAround += getField(neighbourCoord).isMarked();
-    }
+    auto neighb_coords = board_.neighbourCoords(point);
+    short marksAround = std::accumulate(neighb_coords.begin(),
+        neighb_coords.end(), 0, [this](short sum, Point point) {
+            return sum + this->getField(point).isMarked();
+        });
 
     Points revealed;
-    if(marksAround >= minesAround) {
-        for(Point neighbourCoord : board_.neighbourCoords(point)) {
+    if (marksAround >= minesAround) {
+        for (Point neighbourCoord : board_.neighbourCoords(point)) {
             auto &field = getField(neighbourCoord);
-            if(!field.isMarked()) {
+            if (!field.isMarked()) {
                 field.reveal();
                 revealed.push_back(neighbourCoord);
             }
@@ -147,7 +151,7 @@ Points GameBoard::chord(Point point) {
     return revealed;
 }
 
-
-void GameBoard::generate(dimension_t width, dimension_t height, area_t mineCount) {
+void GameBoard::generate(
+    dimension_t width, dimension_t height, area_t mineCount) {
     board_ = _FieldVector(width, height, mineCount);
 }
