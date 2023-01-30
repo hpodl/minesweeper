@@ -61,7 +61,7 @@ void MinefieldUI::create_minefield(
 }
 
 void MinefieldUI::reveal(Point point) {
-    Points revealed = board_.reveal(point);
+    std::vector<Point> revealed = board_.reveal(point);
     for (auto revealedPoint : revealed) {
         Field revealedField = board_.getField(revealedPoint);
         auto &revealedButton = _getButton(revealedPoint);

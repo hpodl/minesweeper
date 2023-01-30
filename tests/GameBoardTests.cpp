@@ -8,7 +8,7 @@ bool operator==(const Point& p1, const Point& p2) {
 }
 
 class FieldVecTestable : public _FieldVector {
-    void populate(Points mines) {
+    void populate(std::vector<Point> mines) {
         for(auto point : mines) {
             getField(point).setMine();
         }
@@ -43,13 +43,13 @@ TEST_CASE("GameBoard correctly reveals recursively.", "[GameBoard, reveal, recur
 TEST_CASE("neighbourCoords return valid coordinates", "[FieldVector, neighbourCoords]") {
     auto fields = _FieldVector(20,20,0);
     Point point(2,2);
-    Points actualCoords {
+    std::vector<Point> actualCoords {
         {1,1}, {1,2}, {1,3},
         {2,1}, {2,2}, {2,3},
         {3,1}, {3,2}, {3,3}
     };
 
-    Points calculated = fields.neighbourCoords(point);
+    std::vector<Point> calculated = fields.neighbourCoords(point);
 
     REQUIRE(std::is_permutation(actualCoords.begin(), actualCoords.end(), calculated.begin()) == true);
 }
@@ -57,12 +57,12 @@ TEST_CASE("neighbourCoords return valid coordinates", "[FieldVector, neighbourCo
 TEST_CASE("neighbourCoords return valid coordinates on the upper edge", "[FieldVector, neighbourCoords]") {
     auto fields = _FieldVector(20,20,0);
     Point point(0,2);
-    Points actualCoords {
+    std::vector<Point> actualCoords {
         {0,1}, {0,2}, {0,3},
         {1,1}, {1,2}, {1,3}
     };
 
-    Points calculated = fields.neighbourCoords(point);
+    std::vector<Point> calculated = fields.neighbourCoords(point);
 
 
     REQUIRE(std::is_permutation(actualCoords.begin(), actualCoords.end(), calculated.begin()) == true);
@@ -72,12 +72,12 @@ TEST_CASE("neighbourCoords return valid coordinates on the upper edge", "[FieldV
 TEST_CASE("neighbourCoords return valid coordinates in the upper-left corner", "[FieldVector, neighbourCoords]") {
     auto fields = _FieldVector(20,20,0);
     Point point(0,0);
-    Points actualCoords {
+    std::vector<Point> actualCoords {
         {0,0}, {0,1},
         {1,0}, {1,1}
     };
 
-    Points calculated = fields.neighbourCoords(point);
+    std::vector<Point> calculated = fields.neighbourCoords(point);
 
     REQUIRE(std::is_permutation(actualCoords.begin(), actualCoords.end(), calculated.begin()) == true);
 }
@@ -85,12 +85,12 @@ TEST_CASE("neighbourCoords return valid coordinates in the upper-left corner", "
 TEST_CASE("neighbourCoords return valid coordinates in the lower-right corner", "[FieldVector, neighbourCoords]") {
     auto fields = _FieldVector(10, 12, 0);
     Point point(9,11);
-    Points actualCoords {
+    std::vector<Point> actualCoords {
         {8, 10}, {9, 10},
         {8, 11}, {9, 11}
     };
 
-    Points calculated = fields.neighbourCoords(point);
+    std::vector<Point> calculated = fields.neighbourCoords(point);
 
     REQUIRE(std::is_permutation(actualCoords.begin(), actualCoords.end(), calculated.begin()) == true);
 }

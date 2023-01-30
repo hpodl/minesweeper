@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15.0)
-project(Minesweeper VERSION 0.3)
+project(Minesweeper VERSION 0.4)
 
 FIND_PACKAGE(FLTK REQUIRED)
 
@@ -16,6 +16,6 @@ ADD_SUBDIRECTORY(./tests)
 
 ADD_EXECUTABLE(Minesweeper ./src/main.cpp)
 
-TARGET_LINK_LIBRARIES(Minesweeper Gui Field GameBoard)
+TARGET_LINK_LIBRARIES(Minesweeper Gui)
 TARGET_LINK_LIBRARIES(Minesweeper ${FLTK_LIBRARIES})
 

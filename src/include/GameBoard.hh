@@ -1,24 +1,10 @@
 #pragma once
 
-#include "Field.hh"
-#include <optional>
 #include <set>
 #include <vector>
 
-using dimension_t = unsigned short;
-// needs to fit dimension_t*dimension_t result
-using area_t = unsigned int;
-
-/**
- * @brief
- * Newtype used to make the code more readable
- */
-struct Point {
-    dimension_t x;
-    dimension_t y;
-};
-
-using Points = std::vector<Point>;
+#include "types.hh"
+#include "Field.hh"
 
 /**
  * @brief
@@ -71,7 +57,7 @@ class _FieldVector {
      *
      * @return std::vector<Point>
      */
-    std::vector<Point> neighbourCoords(Point point);
+    std::vector<Point> neighbourCoords(Point coordinates);
 };
 
 /**
@@ -83,12 +69,12 @@ class GameBoard {
     _FieldVector board_;
     bool mineHit_;
 
-    Points _reveal_empty(Point point);
+    std::vector<Point> _reveal_empty(Point coordinates);
+
   public:
-    GameBoard(dimension_t width, dimension_t height, area_t mineCount)
-        : board_(width, height, mineCount), mineHit_(false) {}
-    GameBoard(_FieldVector board) : board_(board) {}
-    GameBoard() : board_(0, 0, 0){};
+    GameBoard(dimension_t width, dimension_t height, area_t mineCount);
+    GameBoard(_FieldVector board);
+    GameBoard();
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields'
@@ -97,16 +83,27 @@ class GameBoard {
      * @param point - coordinates of field to be revealed
      * @return std::vector<Point>
      */
-    Points reveal(Point point);
-    void mark(Point point);
+    std::vector<Point> reveal(Point coordinates);
+
+    /**
+     * @brief Mars a point at Point(x,y) location
+     * @param coordinates 
+     */
+    void mark(Point coordinates);
+
+    /**
+     * @brief Returns a reference to a point at coordinates Point(x,y)
+     * @return Field& 
+     */
+    Field &getField(Point coordinates);
 
     /**
      * @brief Handles chording logic
      *
      * @param point coordinates of chording origin
-     * @return Points points revealed via chording
+     * @return std::vector<Point>; revealed via chording
      */
-    Points chord(Point point);
+    std::vector<Point> chord(Point coordinates);
 
     /**
      * @brief Creates a new minefield and fills it with mines
@@ -117,13 +114,19 @@ class GameBoard {
      */
     void generate(dimension_t width, dimension_t height, area_t mineCount);
 
-    dimension_t width() { return board_.shape().x; };
-    dimension_t height() { return board_.shape().y; };
-    area_t mineCount() { return board_.mineCount(); };
+    /**
+     * @brief Total number of mines on the board
+     * @return area_t
+     */
+    area_t mineCount();
 
-    area_t size() { return board_.size(); }
+    dimension_t width();
+    dimension_t height();
+    area_t size();
 
-    void print() { board_.print(); };
-
-    Field &getField(Point point) { return board_.getField(point); }
+    /**
+     * @brief Prints the ascii representation of the board; for debugging
+     * purposes
+     */
+    void print();
 };

@@ -11,7 +11,10 @@
 #include <memory>
 #include <vector>
 
+#include "types.hh"
 #include "GameBoard.hh"
+
+class GameBoard;
 
 /**
  * @brief Fl_Button wrapper with an overrideable style changing methods
