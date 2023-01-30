@@ -120,7 +120,7 @@ Points GameBoard::_reveal_empty(Point point) {
             revealed.push_back(neighbourCoords);
             field.reveal();
 
-            if (field.getMineCount() == 0) {
+            if (field.getMineCount() == 0 && !field.isMarked()) {
                 Points thisIteration = _reveal_empty(neighbourCoords);
                 revealed.insert(
                     revealed.end(), thisIteration.begin(), thisIteration.end());
