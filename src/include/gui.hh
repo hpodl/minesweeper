@@ -24,11 +24,11 @@ class FieldButton : public Fl_Button {
   public:
     FieldButton(int x, int y, int w, int h, const char *L);
 
-    void onRevealStyle(const char *representation);
+    void setRevealedStyle(const char *representation);
 
-    void onMarkStyle();
+    void setMarkedStyle();
 
-    void defaultStyle();
+    void setDefaultStyle();
 };
 
 /**

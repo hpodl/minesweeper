@@ -16,17 +16,17 @@ using PField = std::unique_ptr<FieldButton>;
 FieldButton::FieldButton(int x, int y, int w, int h, const char *L = 0)
     : Fl_Button(x, y, w, h, L) {}
 
-void FieldButton::onRevealStyle(const char *representation) {
+void FieldButton::setRevealedStyle(const char *representation) {
     copy_label(representation);
     labelcolor(FL_BLACK);
 }
 
-void FieldButton::onMarkStyle() {
+void FieldButton::setMarkedStyle() {
     label("@4search"); // kind of looks like a bomb
     labelcolor(FL_RED);
 }
 
-void FieldButton::defaultStyle() {
+void FieldButton::setDefaultStyle() {
     color(FL_GRAY);
     label(" ");
 }
@@ -72,7 +72,7 @@ void MinefieldUI::reveal(Point point) {
         }
 
         const char newLabel[] = {revealedField.charRepresentation(), '\0'};
-        revealedButton->onRevealStyle(newLabel);
+        revealedButton->setRevealedStyle(newLabel);
     }
 }
 
@@ -128,12 +128,12 @@ void MinefieldUI::_handle_mouse_click() {
         if (!clickedField.isRevealed()) {
             if (!clickedField.isMarked()) {
                 clickedField.mark(true);
-                clickedButton->onMarkStyle();
+                clickedButton->setMarkedStyle();
             }
 
             else {
                 clickedField.mark(false);
-                clickedButton->defaultStyle();
+                clickedButton->setDefaultStyle();
             }
         }
 
