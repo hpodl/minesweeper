@@ -17,6 +17,7 @@ FieldButton::FieldButton(int x, int y, int w, int h, const char *L = 0)
     : Fl_Button(x, y, w, h, L) {}
 
 void FieldButton::setRevealedStyle(const char *representation) {
+    box(FL_FLAT_BOX);
     copy_label(representation);
     labelcolor(FL_BLACK);
 }
@@ -66,7 +67,6 @@ void MinefieldUI::reveal(Point point) {
         Field revealedField = board_.getField(revealedPoint);
         auto &revealedButton = _getButton(revealedPoint);
 
-        revealedButton->box(FL_FLAT_BOX);
         if (revealedField.isMine()) {
             revealedButton->color(FL_RED);
         }
@@ -127,12 +127,12 @@ void MinefieldUI::_handle_mouse_click() {
     case (FL_RIGHT_MOUSE):
         if (!clickedField.isRevealed()) {
             if (!clickedField.isMarked()) {
-                clickedField.mark(true);
+                clickedField.setMarked(true);
                 clickedButton->setMarkedStyle();
             }
 
             else {
-                clickedField.mark(false);
+                clickedField.setMarked(false);
                 clickedButton->setDefaultStyle();
             }
         }
