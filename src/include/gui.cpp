@@ -83,7 +83,7 @@ int MinefieldUI::handle(int event) {
         break;
 
     case FL_KEYUP:
-        if (*Fl::event_text() == 'r') {
+        if (*Fl::event_text() == 'r' || *Fl::event_text() == 'R') {
             reset(board_.width(), board_.height(), board_.mineCount());
         }
         break;
