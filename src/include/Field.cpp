@@ -13,7 +13,7 @@ bool Field::isMine() { return isMine_; }
 bool Field::isRevealed() { return isRevealed_; }
 bool Field::isMarked() { return isMarked_; }
 
-void Field::mark(bool mark) { isMarked_ = mark; }
+void Field::setMarked(bool mark) { isMarked_ = mark; }
 
 void Field::reveal() {
     isRevealed_ = true;

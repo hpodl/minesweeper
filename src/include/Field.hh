@@ -23,7 +23,7 @@ class Field {
      *
      * @param mark true if marked, else false
      */
-    void mark(bool mark);
+    void setMarked(bool mark);
 
     /**
      * @brief Sets internal variable signalling that the field is revealed
