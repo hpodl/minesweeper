@@ -16,6 +16,6 @@ ADD_SUBDIRECTORY(./tests)
 
 ADD_EXECUTABLE(Minesweeper ./src/main.cpp)
 
-TARGET_LINK_LIBRARIES(Minesweeper Gui)
+TARGET_LINK_LIBRARIES(Minesweeper MinefieldUI)
 TARGET_LINK_LIBRARIES(Minesweeper ${FLTK_LIBRARIES})
 

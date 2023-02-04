@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "gui.hh"
+#include "MinefieldUI.hh"
 
 using PField = std::unique_ptr<FieldButton>;
 
