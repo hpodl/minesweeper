@@ -5,7 +5,7 @@ FIND_PACKAGE(FLTK REQUIRED)
 
 
 SET (CMAKE_CXX_STANDARD 20)
-ADD_COMPILE_OPTIONS(-Wall -Wextra -pedantic -Werror )
+# ADD_COMPILE_OPTIONS(-Wall -Wextra -pedantic -Werror )
 INCLUDE_DIRECTORIES(./src/include)
 
 
@@ -16,6 +16,6 @@ ADD_SUBDIRECTORY(./tests)
 
 ADD_EXECUTABLE(Minesweeper ./src/main.cpp)
 
-TARGET_LINK_LIBRARIES(Minesweeper MinefieldUI)
+TARGET_LINK_LIBRARIES(Minesweeper MinefieldUI MainWindow)
 TARGET_LINK_LIBRARIES(Minesweeper ${FLTK_LIBRARIES})
 

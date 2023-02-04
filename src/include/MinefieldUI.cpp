@@ -61,6 +61,10 @@ void MinefieldUI::create_minefield(
     redraw();
 }
 
+int MinefieldUI::getSideLen() {
+    return buttonSize_ * board_.height();
+}
+
 void MinefieldUI::reveal(Point point) {
     std::vector<Point> revealed = board_.reveal(point);
     for (auto revealedPoint : revealed) {

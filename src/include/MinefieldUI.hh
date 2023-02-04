@@ -56,7 +56,7 @@ class MinefieldUI : public Fl_Group {
     MinefieldUI(int x, int y, int w, int h);
 
     /**
-     * @brief Renders an width by height board of fields
+     * @brief Renders an width by height board of fields, forces them to be square
      *
      * @param width horizontal fields
      * @param height vertical fields
@@ -64,6 +64,7 @@ class MinefieldUI : public Fl_Group {
     void create_minefield(
         dimension_t width, dimension_t height, area_t mineCount);
 
+    int getSideLen();
     /**
      * @brief Handles the logic behind revealing a field, recurses if neighbours
      * are 0
