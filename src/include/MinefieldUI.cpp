@@ -9,6 +9,9 @@
 #include <memory>
 #include <vector>
 
+#define FMT_HEADER_ONLY
+#include <fmt/format.h>
+
 #include "MinefieldUI.hh"
 
 using PField = std::unique_ptr<FieldButton>;
@@ -37,7 +40,10 @@ std::unique_ptr<FieldButton> &MinefieldUI::_getButton(Point point) {
 }
 
 MinefieldUI::MinefieldUI(int x, int y, int w, int h)
-    : Fl_Group(x, y, w, h), board_(0, 0, 0) {}
+    : Fl_Group(x, y, w, h), board_(0, 0, 0) {
+    gameLabel_ = new Fl_Box(0, 0, w, 25, "Welcome to Minesweeper");
+    gameLabel_->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
+}
 
 void MinefieldUI::create_minefield(
     dimension_t width, dimension_t height, area_t mineCount) {
@@ -98,10 +104,10 @@ int MinefieldUI::handle(int event) {
 void MinefieldUI::reset(
     dimension_t newWidth, dimension_t newHeight, area_t mineCount) {
     fields_.clear();
-    
+
     board_ = GameBoard(newWidth, newHeight, mineCount);
     create_minefield(newWidth, newHeight, mineCount);
-    
+
     isLost_ = false;
 }
 
@@ -120,9 +126,6 @@ void MinefieldUI::_handle_mouse_click() {
     PField &clickedButton = _getButton(clickedPos);
     auto &clickedField = board_.getField(clickedPos);
 
-    std::cout << Fl::event_x() - x() << ", " << Fl::event_y() - y() << "\n";
-    std::cout << clickedX << ", " << clickedY << "\n";
-
     switch (mouseButton) {
     case (FL_LEFT_MOUSE):
         if (!clickedField.isMarked() && !clickedField.isRevealed()) {
@@ -132,17 +135,15 @@ void MinefieldUI::_handle_mouse_click() {
 
     case (FL_RIGHT_MOUSE):
         if (!clickedField.isRevealed()) {
-            if (!clickedField.isMarked()) {
-                clickedField.setMarked(true);
+            board_.toggleMark(clickedPos);
+
+            if (board_.getField(clickedPos).isMarked())
                 clickedButton->setMarkedStyle();
-            }
 
-            else {
-                clickedField.setMarked(false);
+            else
                 clickedButton->setDefaultStyle();
-            }
         }
-
+        updateLabel(board_.mineCount() - board_.markCount());
         break;
 
     case (FL_MIDDLE_MOUSE):
@@ -152,4 +153,10 @@ void MinefieldUI::_handle_mouse_click() {
 
         break;
     }
+}
+
+void MinefieldUI::updateLabel(unsigned int minesLeft) {
+    auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
+    gameLabel_->copy_label(lbl);
+    gameLabel_->redraw();
 }

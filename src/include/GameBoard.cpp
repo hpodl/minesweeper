@@ -95,7 +95,7 @@ void _FieldVector::recalculateNeighbours() {
 }
 
 GameBoard::GameBoard(dimension_t width, dimension_t height, area_t mineCount)
-    : board_(width, height, mineCount), mineHit_(false) {}
+    : board_(width, height, mineCount) {}
 GameBoard::GameBoard(_FieldVector board) : board_(board) {}
 GameBoard::GameBoard() : board_(0, 0, 0){};
 
@@ -172,10 +172,20 @@ void GameBoard::generate(
     board_ = _FieldVector(width, height, mineCount);
 }
 
+
+void GameBoard::toggleMark(Point coordinates) {
+    auto &field = getField(coordinates);
+    field.setMarked(!field.isMarked());
+
+    field.isMarked() ? ++markCount_ : --markCount_;
+
+ };
+
 bool GameBoard::isLost() { return mineHit_; }
 dimension_t GameBoard::width() { return board_.shape().x; };
 dimension_t GameBoard::height() { return board_.shape().y; };
 area_t GameBoard::mineCount() { return board_.mineCount(); };
+area_t GameBoard::markCount() { return markCount_; };
 area_t GameBoard::size() { return board_.size(); }
 void GameBoard::print() { board_.print(); };
 Field &GameBoard::getField(Point point) { return board_.getField(point); }

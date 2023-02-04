@@ -11,8 +11,8 @@
 #include <memory>
 #include <vector>
 
-#include "types.hh"
 #include "GameBoard.hh"
+#include "types.hh"
 
 class GameBoard;
 
@@ -36,6 +36,7 @@ class FieldButton : public Fl_Button {
 class MinefieldUI : public Fl_Group {
     std::vector<std::unique_ptr<FieldButton>> fields_;
     GameBoard board_;
+    Fl_Box *gameLabel_;
     int buttonSize_;
     bool isLost_ = false;
 
@@ -57,7 +58,8 @@ class MinefieldUI : public Fl_Group {
     MinefieldUI(int x, int y, int w, int h);
 
     /**
-     * @brief Renders an width by height board of fields, forces them to be square
+     * @brief Renders an width by height board of fields, forces them to be
+     * square
      *
      * @param width horizontal fields
      * @param height vertical fields
@@ -82,4 +84,5 @@ class MinefieldUI : public Fl_Group {
      */
 
     void mark(Point point);
+    void updateLabel(area_t minesLeft);
 };

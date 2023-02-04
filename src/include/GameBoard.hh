@@ -67,7 +67,8 @@ class _FieldVector {
  */
 class GameBoard {
     _FieldVector board_;
-    bool mineHit_;
+    area_t markCount_ = 0;
+    bool mineHit_ = false;
 
     std::vector<Point> _reveal_empty(Point coordinates);
 
@@ -88,11 +89,11 @@ class GameBoard {
     std::vector<Point> reveal(Point coordinates);
 
     /**
-     * @brief Mars a point at Point(x,y) location
+     * @brief Marks/unmarks a point at Point(x,y) location
      * @param coordinates
      */
-    void mark(Point coordinates);
-
+    void toggleMark(Point coordinates);
+    
     /**
      * @brief Returns a reference to a point at coordinates Point(x,y)
      * @return Field&
@@ -121,6 +122,7 @@ class GameBoard {
      * @return area_t
      */
     area_t mineCount();
+    area_t markCount();
 
     dimension_t width();
     dimension_t height();

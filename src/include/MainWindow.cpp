@@ -4,15 +4,18 @@
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Menu_Item.H>
 
+
 MainWindow::MainWindow(int width, int height)
     : Fl_Double_Window(width, height, " Minesweeper") {
     const int menu_h = 25;
     const int minefield_padding = 10;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
     // clang-format off
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU},              // Submenu
-            {"Start", 0, 0, 0, FL_MENU_DIVIDER},    //
+            {"Restart", 0, (Fl_Callback *)restart_callback, this, FL_MENU_DIVIDER},    //
             {0},                                    // ends submenu
 
         {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
@@ -21,7 +24,8 @@ MainWindow::MainWindow(int width, int height)
             {0},                                      // ends submenu
         {0}                                           // ends menu
     };
-    // clang-format on
+// clang-format on
+#pragma GCC diagnostic pop
 
     menu_ = new Fl_Menu_Bar(0, 0, w(), menu_h);
     menu_->copy(menu_items);
@@ -35,3 +39,7 @@ MainWindow::MainWindow(int width, int height)
     const int minefieldSize = minefield_->getSideLen();
     resize(0, 0, minefieldSize + 2 * mp, minefieldSize + menu_h + 2 * mp);
 };
+
+void MainWindow::restart_callback(){
+}
+
