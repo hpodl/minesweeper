@@ -9,9 +9,9 @@ Field::Field()
     : isMine_(false), isRevealed_(false), isMarked_(false), mineCount_(0) {}
 Field::~Field(){};
 
-bool Field::isMine() { return isMine_; }
-bool Field::isRevealed() { return isRevealed_; }
-bool Field::isMarked() { return isMarked_; }
+bool Field::isMine() const { return isMine_; }
+bool Field::isRevealed() const { return isRevealed_; }
+bool Field::isMarked() const { return isMarked_; }
 
 void Field::setMarked(bool mark) { isMarked_ = mark; }
 
@@ -20,7 +20,7 @@ void Field::reveal() {
     isMarked_ = false;
 }
 
-char Field::charRepresentation() {
+char Field::charRepresentation() const {
     if (!isRevealed_) {
         return '@';
     }
@@ -37,4 +37,4 @@ void Field::incrementMineCount() { ++mineCount_; }
 
 void Field::setMine() { isMine_ = true; }
 
-unsigned short Field::getMineCount() { return mineCount_; }
+unsigned short Field::getMineCount() const { return mineCount_; }

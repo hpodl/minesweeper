@@ -14,9 +14,9 @@ class Field {
     Field();
     ~Field();
 
-    bool isMine();
-    bool isRevealed();
-    bool isMarked();
+    bool isMine() const;
+    bool isRevealed() const;
+    bool isMarked() const;
 
     /**
      * @brief Sets internal variable whether the field is marked
@@ -35,7 +35,7 @@ class Field {
      *
      * @return char representation of the field
      */
-    char charRepresentation();
+    char charRepresentation() const;
 
     /**
      * @brief Increments local variable representing the number of neighbouring
@@ -50,5 +50,5 @@ class Field {
     /**
      * @brief Returns a number of neighbouring mines
      */
-    unsigned short getMineCount();
+    unsigned short getMineCount() const;
 };

@@ -23,11 +23,11 @@ class _FieldVector {
 
     Field &getField(Point);
 
-    Point shape() { return {width_, height_}; }
+    Point shape() const { return {width_, height_}; }
 
-    area_t mineCount() { return mineCount_; }
+    area_t mineCount() const { return mineCount_; }
 
-    area_t size();
+    area_t size() const;
 
     void recalculateNeighbours();
 
@@ -46,7 +46,7 @@ class _FieldVector {
      * using their char representation
      *
      */
-    void print();
+    void print() const;
 
     /**
      * @brief
@@ -77,7 +77,7 @@ class GameBoard {
     GameBoard(_FieldVector board);
     GameBoard();
 
-    bool isLost();
+    bool isLost() const;
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields'
@@ -121,16 +121,16 @@ class GameBoard {
      * @brief Total number of mines on the board
      * @return area_t
      */
-    area_t mineCount();
-    area_t markCount();
+    area_t mineCount() const;
+    area_t markCount() const;
 
-    dimension_t width();
-    dimension_t height();
-    area_t size();
+    dimension_t width() const;
+    dimension_t height() const;
+    area_t size() const;
 
     /**
      * @brief Prints the ascii representation of the board; for debugging
      * purposes
      */
-    void print();
+    void print() const;
 };

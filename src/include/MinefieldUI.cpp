@@ -67,7 +67,7 @@ void MinefieldUI::create_minefield(
     redraw();
 }
 
-int MinefieldUI::getSideLen() { return buttonSize_ * board_.height(); }
+int MinefieldUI::getSideLen() const { return buttonSize_ * board_.height(); }
 
 void MinefieldUI::reveal(Point point) {
     std::vector<Point> revealed = board_.reveal(point);
@@ -155,8 +155,8 @@ void MinefieldUI::_handle_mouse_click() {
     }
 }
 
-void MinefieldUI::updateLabel(unsigned int minesLeft) {
-    auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
+void MinefieldUI::updateLabel(const unsigned int minesLeft) {
+    const auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
     gameLabel_->copy_label(lbl);
     gameLabel_->redraw();
 }

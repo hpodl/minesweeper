@@ -67,7 +67,7 @@ class MinefieldUI : public Fl_Group {
     void create_minefield(
         dimension_t width, dimension_t height, area_t mineCount);
 
-    int getSideLen();
+    int getSideLen() const;
     /**
      * @brief Handles the logic behind revealing a field, recurses if neighbours
      * are 0

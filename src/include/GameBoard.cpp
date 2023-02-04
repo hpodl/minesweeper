@@ -27,7 +27,7 @@ Field &_FieldVector::getField(Point point) {
     return fields_[point.y * width_ + point.x];
 };
 
-area_t _FieldVector::size() { return width_ * height_; }
+area_t _FieldVector::size() const { return width_ * height_; }
 
 void _FieldVector::populate(area_t mineCount) {
     int seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -44,7 +44,7 @@ void _FieldVector::populate(area_t mineCount) {
     recalculateNeighbours();
 }
 
-void _FieldVector::print() {
+void _FieldVector::print() const{
     for (area_t i = 0; i < fields_.size(); ++i) {
         if (!(i % width_))
             std::cout << "\n";
@@ -127,7 +127,7 @@ std::vector<Point> GameBoard::_reveal_empty(Point point) {
 
     for (Point neighbourCoords : neighbours) {
         Field &field = board_.getField(neighbourCoords);
-        if (!field.isRevealed()) {
+        if (!field.isRevealed() & !field.isMarked()) {
             revealed.push_back(neighbourCoords);
             field.reveal();
             if (field.isMine()) {
@@ -181,11 +181,11 @@ void GameBoard::toggleMark(Point coordinates) {
 
  };
 
-bool GameBoard::isLost() { return mineHit_; }
-dimension_t GameBoard::width() { return board_.shape().x; };
-dimension_t GameBoard::height() { return board_.shape().y; };
-area_t GameBoard::mineCount() { return board_.mineCount(); };
-area_t GameBoard::markCount() { return markCount_; };
-area_t GameBoard::size() { return board_.size(); }
-void GameBoard::print() { board_.print(); };
+bool GameBoard::isLost() const { return mineHit_; }
+dimension_t GameBoard::width() const { return board_.shape().x; };
+dimension_t GameBoard::height() const { return board_.shape().y; };
+area_t GameBoard::mineCount() const { return board_.mineCount(); };
+area_t GameBoard::markCount() const { return markCount_; };
+area_t GameBoard::size() const { return board_.size(); }
+void GameBoard::print() const { board_.print(); };
 Field &GameBoard::getField(Point point) { return board_.getField(point); }
