@@ -37,6 +37,7 @@ class MinefieldUI : public Fl_Group {
     std::vector<std::unique_ptr<FieldButton>> fields_;
     GameBoard board_;
     int buttonSize_;
+    bool isLost_ = false;
 
     std::unique_ptr<FieldButton> &_getButton(Point point);
     void _handle_mouse_click();

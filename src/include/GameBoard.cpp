@@ -114,16 +114,25 @@ std::vector<Point> GameBoard::reveal(Point point) {
 }
 
 std::vector<Point> GameBoard::_reveal_empty(Point point) {
-    board_.getField(point).reveal();
-
-    std::vector<Point> neighbours = board_.neighbourCoords(point);
     std::vector<Point> revealed;
+    revealed.push_back(point);
+    auto field = board_.getField(point);
+    field.reveal();
+
+    if (field.isMine()) {
+        mineHit_ = true;
+        return revealed;
+    }
+    std::vector<Point> neighbours = board_.neighbourCoords(point);
 
     for (Point neighbourCoords : neighbours) {
         Field &field = board_.getField(neighbourCoords);
         if (!field.isRevealed()) {
             revealed.push_back(neighbourCoords);
             field.reveal();
+            if (field.isMine()) {
+                mineHit_ = true;
+            }
 
             if (field.getMineCount() == 0 && !field.isMarked()) {
                 std::vector<Point> thisIteration =
@@ -139,6 +148,7 @@ std::vector<Point> GameBoard::_reveal_empty(Point point) {
 std::vector<Point> GameBoard::chord(Point point) {
     short minesAround = getField(point).getMineCount();
     auto neighb_coords = board_.neighbourCoords(point);
+
     short marksAround = std::accumulate(neighb_coords.begin(),
         neighb_coords.end(), 0, [this](short sum, Point point) {
             return sum + this->getField(point).isMarked();
@@ -162,6 +172,7 @@ void GameBoard::generate(
     board_ = _FieldVector(width, height, mineCount);
 }
 
+bool GameBoard::isLost() { return mineHit_; }
 dimension_t GameBoard::width() { return board_.shape().x; };
 dimension_t GameBoard::height() { return board_.shape().y; };
 area_t GameBoard::mineCount() { return board_.mineCount(); };

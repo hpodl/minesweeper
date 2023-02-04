@@ -3,8 +3,8 @@
 #include <set>
 #include <vector>
 
-#include "types.hh"
 #include "Field.hh"
+#include "types.hh"
 
 /**
  * @brief
@@ -76,6 +76,8 @@ class GameBoard {
     GameBoard(_FieldVector board);
     GameBoard();
 
+    bool isLost();
+
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields'
      * coordinates.
@@ -87,13 +89,13 @@ class GameBoard {
 
     /**
      * @brief Mars a point at Point(x,y) location
-     * @param coordinates 
+     * @param coordinates
      */
     void mark(Point coordinates);
 
     /**
      * @brief Returns a reference to a point at coordinates Point(x,y)
-     * @return Field& 
+     * @return Field&
      */
     Field &getField(Point coordinates);
 

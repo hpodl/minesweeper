@@ -61,9 +61,7 @@ void MinefieldUI::create_minefield(
     redraw();
 }
 
-int MinefieldUI::getSideLen() {
-    return buttonSize_ * board_.height();
-}
+int MinefieldUI::getSideLen() { return buttonSize_ * board_.height(); }
 
 void MinefieldUI::reveal(Point point) {
     std::vector<Point> revealed = board_.reveal(point);
@@ -72,6 +70,7 @@ void MinefieldUI::reveal(Point point) {
         auto &revealedButton = _getButton(revealedPoint);
 
         if (revealedField.isMine()) {
+            isLost_ = true;
             revealedButton->color(FL_RED);
         }
 
@@ -83,9 +82,9 @@ void MinefieldUI::reveal(Point point) {
 int MinefieldUI::handle(int event) {
     switch (event) {
     case FL_PUSH:
-        _handle_mouse_click();
+        if (!isLost_)
+            _handle_mouse_click();
         break;
-
     case FL_KEYUP:
         if (*Fl::event_text() == 'r' || *Fl::event_text() == 'R') {
             reset(board_.width(), board_.height(), board_.mineCount());
@@ -98,9 +97,12 @@ int MinefieldUI::handle(int event) {
 
 void MinefieldUI::reset(
     dimension_t newWidth, dimension_t newHeight, area_t mineCount) {
-    board_ = GameBoard(newWidth, newHeight, mineCount);
     fields_.clear();
+    
+    board_ = GameBoard(newWidth, newHeight, mineCount);
     create_minefield(newWidth, newHeight, mineCount);
+    
+    isLost_ = false;
 }
 
 void MinefieldUI::_handle_mouse_click() {
