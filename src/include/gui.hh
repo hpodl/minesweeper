@@ -17,8 +17,7 @@
 class GameBoard;
 
 /**
- * @brief Fl_Button wrapper with an overrideable style changing methods
- *
+ * @brief Fl_Button wrapper with simple style changing methods
  */
 class FieldButton : public Fl_Button {
   public:
@@ -33,7 +32,6 @@ class FieldButton : public Fl_Button {
 
 /**
  * @brief GUI interface for the GameBoard
- *
  */
 class MinefieldUI : public Fl_Group {
     std::vector<std::unique_ptr<FieldButton>> fields_;
