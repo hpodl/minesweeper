@@ -6,8 +6,8 @@ class MinefieldUI;
 class MainWindow : public Fl_Double_Window {
     Fl_Menu_Bar *menu_;
     MinefieldUI *minefield_;
-    
+
   public:
     MainWindow(int width, int height);
-    static void restart_callback();
+    static void restart_callback(Fl_Widget*, void *data);
 };

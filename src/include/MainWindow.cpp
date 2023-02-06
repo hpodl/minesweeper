@@ -4,7 +4,6 @@
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Menu_Item.H>
 
-
 MainWindow::MainWindow(int width, int height)
     : Fl_Double_Window(width, height, " Minesweeper") {
     const int menu_h = 25;
@@ -40,6 +39,6 @@ MainWindow::MainWindow(int width, int height)
     resize(0, 0, minefieldSize + 2 * mp, minefieldSize + menu_h + 2 * mp);
 };
 
-void MainWindow::restart_callback(){
+void MainWindow::restart_callback(Fl_Widget*, void *data) {
+    ((MainWindow*)data)->minefield_->reset(20,20,50);
 }
-
