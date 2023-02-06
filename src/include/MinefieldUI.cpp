@@ -107,7 +107,7 @@ void MinefieldUI::reset(
 
     board_ = GameBoard(newWidth, newHeight, mineCount);
     createMinefield(newWidth, newHeight, mineCount);
-    updateLabel(mineCount);
+    updateMinesLeftLabel(mineCount);
 
     isLost_ = false;
 }
@@ -137,7 +137,7 @@ void MinefieldUI::_handleMouseClick() {
     case (FL_RIGHT_MOUSE):
         if (!clickedField.isRevealed()) {
             board_.toggleMark(clickedPos);
-            updateLabel(board_.mineCount() - board_.markCount());
+            updateMinesLeftLabel(board_.mineCount() - board_.markCount());
 
             if (board_.getField(clickedPos).isMarked())
                 clickedButton->setMarkedStyle();
@@ -156,7 +156,7 @@ void MinefieldUI::_handleMouseClick() {
     }
 }
 
-void MinefieldUI::updateLabel(const unsigned int minesLeft) {
+void MinefieldUI::updateMinesLeftLabel(const unsigned int minesLeft) {
     const auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
     gameLabel_->copy_label(lbl);
 }

@@ -84,5 +84,5 @@ class MinefieldUI : public Fl_Group {
      */
 
     void mark(Point point);
-    void updateLabel(area_t minesLeft);
+    void updateMinesLeftLabel(area_t minesLeft);
 };
