@@ -45,7 +45,7 @@ MinefieldUI::MinefieldUI(int x, int y, int w, int h)
     gameLabel_->align(FL_ALIGN_CENTER | FL_ALIGN_INSIDE);
 }
 
-void MinefieldUI::create_minefield(
+void MinefieldUI::createMinefield(
     dimension_t width, dimension_t height, area_t mineCount) {
     fields_.reserve(width * height);
     board_.generate(width, height, mineCount);
@@ -89,7 +89,7 @@ int MinefieldUI::handle(int event) {
     switch (event) {
     case FL_PUSH:
         if (!isLost_)
-            _handle_mouse_click();
+            _handleMouseClick();
         break;
     case FL_KEYUP:
         if (*Fl::event_text() == 'r' || *Fl::event_text() == 'R') {
@@ -106,12 +106,13 @@ void MinefieldUI::reset(
     fields_.clear();
 
     board_ = GameBoard(newWidth, newHeight, mineCount);
-    create_minefield(newWidth, newHeight, mineCount);
+    createMinefield(newWidth, newHeight, mineCount);
+    updateLabel(mineCount);
 
     isLost_ = false;
 }
 
-void MinefieldUI::_handle_mouse_click() {
+void MinefieldUI::_handleMouseClick() {
     int mouseButton = Fl::event_button();
     int clickedX = (Fl::event_x() - x()) / buttonSize_;
     int clickedY = (Fl::event_y() - y()) / buttonSize_;

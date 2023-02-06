@@ -14,7 +14,7 @@ MainWindow::MainWindow(int width, int height)
     // clang-format off
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU},              // Submenu
-            {"Restart", 0, (Fl_Callback *)restart_callback, this, FL_MENU_DIVIDER},    //
+            {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},    //
             {0},                                    // ends submenu
 
         {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
@@ -32,13 +32,13 @@ MainWindow::MainWindow(int width, int height)
     // short form for readability
     const int mp = minefield_padding;
     minefield_ = new MinefieldUI(0 + mp, 0 + mp + menu_h, w(), h() - mp);
-    minefield_->create_minefield(20, 20, 50);
+    minefield_->createMinefield(20, 20, 50);
 
     // resizes the window to account for actual minefield size
     const int minefieldSize = minefield_->getSideLen();
     resize(0, 0, minefieldSize + 2 * mp, minefieldSize + menu_h + 2 * mp);
 };
 
-void MainWindow::restart_callback(Fl_Widget*, void *data) {
+void MainWindow::restartCallback(Fl_Widget*, void *data) {
     ((MainWindow*)data)->minefield_->reset(20,20,50);
 }

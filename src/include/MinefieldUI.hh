@@ -41,7 +41,7 @@ class MinefieldUI : public Fl_Group {
     bool isLost_ = false;
 
     std::unique_ptr<FieldButton> &_getButton(Point point);
-    void _handle_mouse_click();
+    void _handleMouseClick();
 
   public:
     int handle(int event) override;
@@ -64,7 +64,7 @@ class MinefieldUI : public Fl_Group {
      * @param width horizontal fields
      * @param height vertical fields
      */
-    void create_minefield(
+    void createMinefield(
         dimension_t width, dimension_t height, area_t mineCount);
 
     int getSideLen() const;

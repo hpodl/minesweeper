@@ -106,14 +106,14 @@ std::vector<Point> GameBoard::reveal(Point point) {
     field.reveal();
 
     if (field.getMineCount() == 0) {
-        revealed = _reveal_empty(point);
+        revealed = _revealEmpty(point);
     }
 
     revealed.push_back(point);
     return revealed;
 }
 
-std::vector<Point> GameBoard::_reveal_empty(Point point) {
+std::vector<Point> GameBoard::_revealEmpty(Point point) {
     std::vector<Point> revealed;
     revealed.push_back(point);
     auto field = board_.getField(point);
@@ -136,7 +136,7 @@ std::vector<Point> GameBoard::_reveal_empty(Point point) {
 
             if (field.getMineCount() == 0 && !field.isMarked()) {
                 std::vector<Point> thisIteration =
-                    _reveal_empty(neighbourCoords);
+                    _revealEmpty(neighbourCoords);
                 revealed.insert(
                     revealed.end(), thisIteration.begin(), thisIteration.end());
             }

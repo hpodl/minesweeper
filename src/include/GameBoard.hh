@@ -70,7 +70,7 @@ class GameBoard {
     area_t markCount_ = 0;
     bool mineHit_ = false;
 
-    std::vector<Point> _reveal_empty(Point coordinates);
+    std::vector<Point> _revealEmpty(Point coordinates);
 
   public:
     GameBoard(dimension_t width, dimension_t height, area_t mineCount);
