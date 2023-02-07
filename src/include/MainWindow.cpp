@@ -25,6 +25,9 @@ MainWindow::MainWindow(int width, int height)
             {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},
             {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER},
             {0},                                      // ends submenu
+        {"View", 0, 0, 0, FL_SUBMENU},              // Submenu
+            {"Remove border", 0, (Fl_Callback *)borderCallback, this, FL_MENU_DIVIDER},
+            {0},                                    // ends submenu
         {0}                                           // ends menu
     };
     // clang-format on
@@ -44,11 +47,15 @@ MainWindow::MainWindow(int width, int height)
 };
 
 void MainWindow::restartCallback(Fl_Widget *, void *data) {
-    ((MainWindow *)data)->resetBoard(20, 20, 50);
+    static_cast<MainWindow *>(data)->resetBoard(20, 20, 50);
 }
 
 void MainWindow::resetBoard(int width, int height, int mineCount) {
     minefield_->reset(width, height, mineCount);
+}
+
+void MainWindow::borderCallback(Fl_Widget *, void *data) {
+    static_cast<MainWindow *>(data)->border(0);
 }
 
 BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
