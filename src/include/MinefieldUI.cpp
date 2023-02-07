@@ -64,6 +64,7 @@ void MinefieldUI::createMinefield(
         }
     end();
 
+    updateMinesLeftLabel(mineCount);
     redraw();
 }
 
