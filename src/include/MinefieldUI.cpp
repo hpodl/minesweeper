@@ -50,7 +50,7 @@ void MinefieldUI::createMinefield(
     fields_.reserve(width * height);
     board_.generate(width, height, mineCount);
 
-    int sideLen = w() / width > h() / height ? h() / height : w() / width;
+    int sideLen = (w() / width) > (h() / height) ? (h() / height) : (w() / width);
     buttonSize_ = sideLen;
 
     begin();
