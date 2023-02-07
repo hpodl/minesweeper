@@ -113,6 +113,15 @@ void MinefieldUI::reset(
     isLost_ = false;
 }
 
+
+void MinefieldUI::reset() {
+    int width = board_.width();
+    int height = board_.height();
+    int mineCount = board_.mineCount();
+
+    reset(width, height, mineCount);
+}
+
 void MinefieldUI::_handleMouseClick() {
     int mouseButton = Fl::event_button();
     int clickedX = (Fl::event_x() - x()) / buttonSize_;

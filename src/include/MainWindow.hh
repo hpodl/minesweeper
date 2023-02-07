@@ -18,6 +18,7 @@ class MainWindow : public Fl_Double_Window {
     static void configCallback(Fl_Widget *, void *data);
     static void borderCallback(Fl_Widget *, void *data);
     void resetBoard(int width, int height, int mineCount);
+    void resetBoard();
 };
 
 class BoardConfigWindow : public Fl_Double_Window {

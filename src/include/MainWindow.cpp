@@ -1,3 +1,4 @@
+#include <functional>
 #include <utility>
 
 #include "MainWindow.hh"
@@ -15,22 +16,42 @@ MainWindow::MainWindow(int width, int height)
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-    // clang-format off
     Fl_Menu_Item menu_items[] = {
-        {"File", 0, 0, 0, FL_SUBMENU},              // Submenu
-            {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},
-            {0},                                    // ends submenu
+        {"File", 0, 0, 0, FL_SUBMENU}, // Submenu
+        {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},
+        {0}, // ends submenu
 
-        {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
-            {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},
-            {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER},
-            {0},                                      // ends submenu
-        {"View", 0, 0, 0, FL_SUBMENU},              // Submenu
-            {"Remove border", 0, (Fl_Callback *)borderCallback, this, FL_MENU_DIVIDER},
-            {0},                                    // ends submenu
-        {0}                                           // ends menu
+        {"Edit", 0, 0, 0, FL_SUBMENU}, // Submenu
+        {"Config", 0, (Fl_Callback *)&configCallback, this, FL_MENU_DIVIDER},
+        {"Difficulty", 0, 0, 0, FL_SUBMENU},
+        {"Begginer", 0,
+            [](Fl_Widget *, void *p) {
+                auto *mainWindow = static_cast<MainWindow *>(p);
+                mainWindow->resetBoard(8, 8, 10);
+            },
+            this, FL_MENU_DIVIDER},
+        {"Intermediate", 0,
+            [](Fl_Widget *, void *p) {
+                auto *mainWindow = static_cast<MainWindow *>(p);
+                mainWindow->resetBoard(16, 16, 40);
+            },
+            this, FL_MENU_DIVIDER},
+        {"Expert", 0,
+            [](Fl_Widget *, void *p) {
+                auto *mainWindow = static_cast<MainWindow *>(p);
+                mainWindow->resetBoard(30, 16, 99);
+            },
+            this, FL_MENU_DIVIDER},
+        {"Custom", 0, configCallback, this, FL_MENU_DIVIDER},
+        {0}, // ends submenu
+        {0}, // ends submenu
+
+        {"View", 0, 0, 0, FL_SUBMENU}, // Submenu
+        {"Remove border", 0, (Fl_Callback *)borderCallback, this,
+            FL_MENU_DIVIDER},
+        {0}, // ends submenu
+        {0}  // ends menu
     };
-    // clang-format on
 #pragma GCC diagnostic pop
 
     menu_ = new Fl_Menu_Bar(0, 0, w(), menu_h);
@@ -47,12 +68,15 @@ MainWindow::MainWindow(int width, int height)
 };
 
 void MainWindow::restartCallback(Fl_Widget *, void *data) {
-    static_cast<MainWindow *>(data)->resetBoard(20, 20, 50);
+    auto window = static_cast<MainWindow *>(data);
+    window->resetBoard();
 }
 
 void MainWindow::resetBoard(int width, int height, int mineCount) {
     minefield_->reset(width, height, mineCount);
 }
+
+void MainWindow::resetBoard() { minefield_->reset(); }
 
 void MainWindow::borderCallback(Fl_Widget *, void *data) {
     static_cast<MainWindow *>(data)->border(0);

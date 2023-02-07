@@ -55,6 +55,8 @@ class MinefieldUI : public Fl_Group {
      */
     void reset(dimension_t newWidth, dimension_t newHeight, area_t mineCount);
 
+    void reset();
+
     MinefieldUI(int x, int y, int w, int h);
 
     /**
