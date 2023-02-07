@@ -16,42 +16,43 @@ MainWindow::MainWindow(int width, int height)
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+    // clang-format off
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU}, // Submenu
-        {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},
+            {"Restart", 0, (Fl_Callback *)restartCallback, this, 0},
         {0}, // ends submenu
-
+        
         {"Edit", 0, 0, 0, FL_SUBMENU}, // Submenu
-        {"Config", 0, (Fl_Callback *)&configCallback, this, FL_MENU_DIVIDER},
-        {"Difficulty", 0, 0, 0, FL_SUBMENU},
-        {"Begginer", 0,
-            [](Fl_Widget *, void *p) {
-                auto *mainWindow = static_cast<MainWindow *>(p);
-                mainWindow->resetBoard(8, 8, 10);
-            },
-            this, FL_MENU_DIVIDER},
-        {"Intermediate", 0,
-            [](Fl_Widget *, void *p) {
-                auto *mainWindow = static_cast<MainWindow *>(p);
-                mainWindow->resetBoard(16, 16, 40);
-            },
-            this, FL_MENU_DIVIDER},
-        {"Expert", 0,
-            [](Fl_Widget *, void *p) {
-                auto *mainWindow = static_cast<MainWindow *>(p);
-                mainWindow->resetBoard(30, 16, 99);
-            },
-            this, FL_MENU_DIVIDER},
-        {"Custom", 0, configCallback, this, FL_MENU_DIVIDER},
-        {0}, // ends submenu
+            {"Config", 0, (Fl_Callback *)&configCallback, this, FL_MENU_DIVIDER},
+            {"Difficulty", 0, 0, 0, FL_SUBMENU}, // Sub-submenu
+                {"Begginer", 0,
+                    [](Fl_Widget *, void *p) {
+                        auto *mainWindow = static_cast<MainWindow *>(p);
+                        mainWindow->resetBoard(8, 8, 10);
+                    },
+                    this, FL_MENU_DIVIDER},
+                {"Intermediate", 0,
+                    [](Fl_Widget *, void *p) {
+                        auto *mainWindow = static_cast<MainWindow *>(p);
+                        mainWindow->resetBoard(16, 16, 40);
+                    },
+                    this, FL_MENU_DIVIDER},
+                {"Expert", 0,
+                    [](Fl_Widget *, void *p) {
+                        auto *mainWindow = static_cast<MainWindow *>(p);
+                        mainWindow->resetBoard(30, 16, 99);
+                    },
+                    this, FL_MENU_DIVIDER},
+                {"Custom", 0, configCallback, this, 0},
+            {0}, // ends sub-submenu
         {0}, // ends submenu
 
         {"View", 0, 0, 0, FL_SUBMENU}, // Submenu
-        {"Remove border", 0, (Fl_Callback *)borderCallback, this,
-            FL_MENU_DIVIDER},
+            {"Remove border", 0, (Fl_Callback *)borderCallback, this, 0},
         {0}, // ends submenu
-        {0}  // ends menu
+    {0}  // ends menu
     };
+    // clang-format on
 #pragma GCC diagnostic pop
 
     menu_ = new Fl_Menu_Bar(0, 0, w(), menu_h);
