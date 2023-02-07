@@ -55,7 +55,7 @@ BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
     : Fl_Double_Window(x, y, 240, 160, "Minefield Settings"),
       parentWindow_(parent) {
     const int inputW(75), inputH(30);
-    const int buttW(200), buttH(40);
+    const int buttW(90), buttH(40);
 
     int nWidget = 0;
     auto input_x = []() { return 60; };
@@ -70,18 +70,28 @@ BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
     Fl_Button *confirmButton_ =
         new Fl_Button(20, 10 + inputH * 3 + 10, buttW, buttH, "Confirm");
 
+    Fl_Button *cancelButton_ = new Fl_Button(
+        20 + buttW + 20, 10 + inputH * 3 + 10, buttW, buttH, "Cancel");
+
     widthInput_->value("20");
     heightInput_->value("20");
     mineCountInput_->value("50");
 
     confirmButton_->callback(
         [](Fl_Widget *w, void *p) {
-            BoardConfigWindow *configWindow =
-                static_cast<BoardConfigWindow *>(p);
+            auto *configWindow = static_cast<BoardConfigWindow *>(p);
             int width = std::stoi(configWindow->widthInput_->value());
             int height = std::stoi(configWindow->heightInput_->value());
             int mineCount = std::stoi(configWindow->mineCountInput_->value());
             configWindow->parentWindow_->resetBoard(width, height, mineCount);
+            configWindow->hide();
+        },
+        this);
+
+    cancelButton_->callback(
+        [](Fl_Widget *w, void *p) {
+            auto *configWindow = static_cast<BoardConfigWindow *>(p);
+            configWindow->hide();
         },
         this);
 }

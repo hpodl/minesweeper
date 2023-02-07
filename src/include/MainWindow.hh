@@ -25,6 +25,7 @@ class BoardConfigWindow : public Fl_Double_Window {
     Fl_Int_Input *mineCountInput_;
 
     Fl_Button *confirmButton_;
+    Fl_Button *cancelButton_;
 
     MainWindow *parentWindow_;
 
