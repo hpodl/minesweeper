@@ -1,6 +1,10 @@
+#include <utility>
+
 #include "MainWindow.hh"
 #include "MinefieldUI.hh"
 
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Int_Input.H>
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Menu_Item.H>
 
@@ -39,6 +43,29 @@ MainWindow::MainWindow(int width, int height)
     resize(0, 0, minefieldSize + 2 * mp, minefieldSize + menu_h + 2 * mp);
 };
 
-void MainWindow::restartCallback(Fl_Widget*, void *data) {
-    ((MainWindow*)data)->minefield_->reset(20,20,50);
+void MainWindow::restartCallback(Fl_Widget *, void *data) {
+    ((MainWindow *)data)->minefield_->reset(20, 20, 50);
+}
+
+BoardConfigWindow::BoardConfigWindow(int width, int height)
+    : Fl_Double_Window(240, 160, "Minefield Settings") {
+    const int inputW(75), inputH(30);
+    const int buttW(200), buttH(40);
+
+    int nWidget = 0;
+    auto input_x = []() { return 60; };
+    auto input_y = [&nWidget]() { return 10 + inputH * (nWidget++); };
+
+    // clang-format off
+    Fl_Int_Input *widthInput_     = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Width: ");
+    Fl_Int_Input *heightInput_    = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Height: ");
+    Fl_Int_Input *mineCountInput_ = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Mines: ");
+    // clang-format on
+
+    Fl_Button *confirmButton_ =
+        new Fl_Button(20, 10 + inputH * 3 + 10, buttW, buttH, "Confirm");
+
+    widthInput_->value("20");
+    heightInput_->value("20");
+    mineCountInput_->value("50");
 }
