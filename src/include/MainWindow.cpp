@@ -23,7 +23,7 @@ MainWindow::MainWindow(int width, int height)
 
         {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
             {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER}, //
-            {"Config", 0, 0, 0, FL_MENU_DIVIDER},     //
+            {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},     //
             {0},                                      // ends submenu
         {0}                                           // ends menu
     };
@@ -44,11 +44,15 @@ MainWindow::MainWindow(int width, int height)
 };
 
 void MainWindow::restartCallback(Fl_Widget *, void *data) {
-    ((MainWindow *)data)->minefield_->reset(20, 20, 50);
+    ((MainWindow *)data)->resetBoard(20, 20, 50);
 }
 
-BoardConfigWindow::BoardConfigWindow(int width, int height)
-    : Fl_Double_Window(240, 160, "Minefield Settings") {
+void MainWindow::resetBoard(int width, int height, int mineCount) {
+    minefield_->reset(width, height, mineCount);
+}
+
+BoardConfigWindow::BoardConfigWindow(int width, int height, MainWindow *parent)
+    : Fl_Double_Window(240, 160, "Minefield Settings"), parentWindow_(parent) {
     const int inputW(75), inputH(30);
     const int buttW(200), buttH(40);
 
@@ -57,9 +61,9 @@ BoardConfigWindow::BoardConfigWindow(int width, int height)
     auto input_y = [&nWidget]() { return 10 + inputH * (nWidget++); };
 
     // clang-format off
-    Fl_Int_Input *widthInput_     = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Width: ");
-    Fl_Int_Input *heightInput_    = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Height: ");
-    Fl_Int_Input *mineCountInput_ = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Mines: ");
+    widthInput_     = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Width: ");
+    heightInput_    = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Height: ");
+    mineCountInput_ = new Fl_Int_Input(input_x(), input_y(), inputW, inputH, "Mines: ");
     // clang-format on
 
     Fl_Button *confirmButton_ =
@@ -68,4 +72,21 @@ BoardConfigWindow::BoardConfigWindow(int width, int height)
     widthInput_->value("20");
     heightInput_->value("20");
     mineCountInput_->value("50");
+
+    confirmButton_->callback(
+        [](Fl_Widget *w, void *p) {
+            BoardConfigWindow *configWindow =
+                static_cast<BoardConfigWindow *>(p);
+            int width = std::stoi(configWindow->widthInput_->value());
+            int height = std::stoi(configWindow->heightInput_->value());
+            int mineCount = std::stoi(configWindow->mineCountInput_->value());
+            configWindow->parentWindow_->resetBoard(width, height, mineCount);
+        },
+        this);
+}
+
+void MainWindow::configCallback(Fl_Widget *, void *data) {
+    MainWindow *self = static_cast<MainWindow *>(data);
+    auto configWind = new BoardConfigWindow(1, 1, self);
+    configWind->show();
 }

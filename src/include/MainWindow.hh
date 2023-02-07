@@ -11,14 +11,20 @@ class MainWindow : public Fl_Double_Window {
 
   public:
     MainWindow(int width, int height);
-    static void restartCallback(Fl_Widget*, void *data);
+    static void restartCallback(Fl_Widget *, void *data);
+    static void configCallback(Fl_Widget *, void *data);
+    void resetBoard(int width, int height, int mineCount);
 };
 
 class BoardConfigWindow : public Fl_Double_Window {
-  Fl_Int_Input* widthInput_;
-  Fl_Int_Input* heightInput_;
-  Fl_Int_Input* mineCountInput_;
-  Fl_Button* confirmButton_;
+    Fl_Int_Input *widthInput_;
+    Fl_Int_Input *heightInput_;
+    Fl_Int_Input *mineCountInput_;
+
+    Fl_Button *confirmButton_;
+
+    MainWindow *parentWindow_;
+
   public:
-    BoardConfigWindow(int width, int height);
+    BoardConfigWindow(int width, int height, MainWindow *parent);
 };
