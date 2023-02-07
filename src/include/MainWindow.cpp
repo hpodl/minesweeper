@@ -18,16 +18,16 @@ MainWindow::MainWindow(int width, int height)
     // clang-format off
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU},              // Submenu
-            {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},    //
+            {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},
             {0},                                    // ends submenu
 
         {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
             {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER}, //
-            {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},     //
+            {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},
             {0},                                      // ends submenu
         {0}                                           // ends menu
     };
-// clang-format on
+    // clang-format on
 #pragma GCC diagnostic pop
 
     menu_ = new Fl_Menu_Bar(0, 0, w(), menu_h);
