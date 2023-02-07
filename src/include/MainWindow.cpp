@@ -85,7 +85,7 @@ BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
     mineCountInput_->value("50");
 
     confirmButton_->callback(
-        [](Fl_Widget *w, void *p) {
+        [](Fl_Widget *, void *p) {
             auto *configWindow = static_cast<BoardConfigWindow *>(p);
             int width = std::stoi(configWindow->widthInput_->value());
             int height = std::stoi(configWindow->heightInput_->value());
@@ -96,7 +96,7 @@ BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
         this);
 
     cancelButton_->callback(
-        [](Fl_Widget *w, void *p) {
+        [](Fl_Widget *, void *p) {
             auto *configWindow = static_cast<BoardConfigWindow *>(p);
             configWindow->hide();
         },
