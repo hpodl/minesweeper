@@ -22,8 +22,8 @@ MainWindow::MainWindow(int width, int height)
             {0},                                    // ends submenu
 
         {"Edit", 0, 0, 0, FL_SUBMENU},                // Submenu
-            {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER}, //
             {"Config", 0, (Fl_Callback *)configCallback, this, FL_MENU_DIVIDER},
+            {"Difficulty", 0, 0, 0, FL_MENU_DIVIDER},
             {0},                                      // ends submenu
         {0}                                           // ends menu
     };
