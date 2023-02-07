@@ -166,7 +166,7 @@ void MinefieldUI::_handleMouseClick() {
     }
 }
 
-void MinefieldUI::updateMinesLeftLabel(const unsigned int minesLeft) {
+void MinefieldUI::updateMinesLeftLabel(const int minesLeft) {
     const auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
     gameLabel_->copy_label(lbl);
 }
