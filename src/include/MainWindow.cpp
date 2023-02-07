@@ -9,7 +9,7 @@
 #include <FL/Fl_Menu_Item.H>
 
 MainWindow::MainWindow(int width, int height)
-    : Fl_Double_Window(width, height, " Minesweeper") {
+    : Fl_Double_Window(width, height, " Minesweeper"), configWindow_(nullptr) {
     const int menu_h = 25;
     const int minefield_padding = 10;
 
@@ -51,8 +51,9 @@ void MainWindow::resetBoard(int width, int height, int mineCount) {
     minefield_->reset(width, height, mineCount);
 }
 
-BoardConfigWindow::BoardConfigWindow(int width, int height, MainWindow *parent)
-    : Fl_Double_Window(240, 160, "Minefield Settings"), parentWindow_(parent) {
+BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
+    : Fl_Double_Window(x, y, 240, 160, "Minefield Settings"),
+      parentWindow_(parent) {
     const int inputW(75), inputH(30);
     const int buttW(200), buttH(40);
 
@@ -87,6 +88,9 @@ BoardConfigWindow::BoardConfigWindow(int width, int height, MainWindow *parent)
 
 void MainWindow::configCallback(Fl_Widget *, void *data) {
     MainWindow *self = static_cast<MainWindow *>(data);
-    auto configWind = new BoardConfigWindow(1, 1, self);
-    configWind->show();
+    if (self->configWindow_ == nullptr)
+        self->configWindow_ =
+            new BoardConfigWindow(self->x() + 10, self->y() + 10, self);
+    self->configWindow_->show();
+    self->focus(self->configWindow_);
 }

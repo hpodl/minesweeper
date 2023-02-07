@@ -1,13 +1,16 @@
 #include <FL/Fl_Double_Window.H>
 
-class Fl_Menu_Bar;
 class MinefieldUI;
+class BoardConfigWindow;
+
+class Fl_Menu_Bar;
 class Fl_Int_Input;
 class Fl_Button;
 
 class MainWindow : public Fl_Double_Window {
     Fl_Menu_Bar *menu_;
     MinefieldUI *minefield_;
+    BoardConfigWindow *configWindow_;
 
   public:
     MainWindow(int width, int height);
