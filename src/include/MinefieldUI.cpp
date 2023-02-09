@@ -21,7 +21,10 @@ FieldButton::FieldButton(int x, int y, int w, int h, const char *L = 0)
 
 void FieldButton::setRevealedStyle(const char *representation) {
     box(FL_FLAT_BOX);
-    copy_label(representation);
+    if(*representation == '0')
+        label(" ");
+    else
+        copy_label(representation);
     labelcolor(FL_BLACK);
 }
 
