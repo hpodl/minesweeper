@@ -1,3 +1,4 @@
+#pragma once
 #include <FL/Fl_Double_Window.H>
 
 class MinefieldUI;
