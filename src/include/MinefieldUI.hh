@@ -42,6 +42,8 @@ class MinefieldUI : public Fl_Group {
 
     std::unique_ptr<FieldButton> &_getButton(Point point);
     void _handleMouseClick();
+    void _updateMinesLeftLabel(int minesLeft);
+
 
   public:
     int handle(int event) override;
@@ -54,7 +56,10 @@ class MinefieldUI : public Fl_Group {
      * @param mineCount - number of mines
      */
     void reset(dimension_t newWidth, dimension_t newHeight, area_t mineCount);
-
+    
+    /**
+     * @brief Resets the state of the gameboard and updates the gui accordingly
+     */
     void reset();
 
     MinefieldUI(int x, int y, int w, int h);
@@ -77,14 +82,4 @@ class MinefieldUI : public Fl_Group {
      * @param point coordinates of the point to be revealed
      */
     void reveal(Point point);
-
-    /**
-     * @brief Marks a point as a mine, disabling the ability to reveal it
-     * manually and via chording
-     *
-     * @param point coordinates of the point to be marked
-     */
-
-    void mark(Point point);
-    void updateMinesLeftLabel(int minesLeft);
 };

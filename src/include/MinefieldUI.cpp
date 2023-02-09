@@ -50,7 +50,8 @@ void MinefieldUI::createMinefield(
     fields_.reserve(width * height);
     board_.generate(width, height, mineCount);
 
-    int sideLen = (w() / width) > (h() / height) ? (h() / height) : (w() / width);
+    int sideLen =
+        (w() / width) > (h() / height) ? (h() / height) : (w() / width);
     buttonSize_ = sideLen;
 
     begin();
@@ -64,7 +65,7 @@ void MinefieldUI::createMinefield(
         }
     end();
 
-    updateMinesLeftLabel(mineCount);
+    _updateMinesLeftLabel(mineCount);
     redraw();
 }
 
@@ -108,11 +109,10 @@ void MinefieldUI::reset(
 
     board_ = GameBoard(newWidth, newHeight, mineCount);
     createMinefield(newWidth, newHeight, mineCount);
-    updateMinesLeftLabel(mineCount);
+    _updateMinesLeftLabel(mineCount);
 
     isLost_ = false;
 }
-
 
 void MinefieldUI::reset() {
     int width = board_.width();
@@ -147,7 +147,7 @@ void MinefieldUI::_handleMouseClick() {
     case (FL_RIGHT_MOUSE):
         if (!clickedField.isRevealed()) {
             board_.toggleMark(clickedPos);
-            updateMinesLeftLabel(board_.mineCount() - board_.markCount());
+            _updateMinesLeftLabel(board_.mineCount() - board_.markCount());
 
             if (board_.getField(clickedPos).isMarked())
                 clickedButton->setMarkedStyle();
@@ -166,7 +166,7 @@ void MinefieldUI::_handleMouseClick() {
     }
 }
 
-void MinefieldUI::updateMinesLeftLabel(const int minesLeft) {
+void MinefieldUI::_updateMinesLeftLabel(const int minesLeft) {
     const auto lbl = fmt::format("Mines left: {}", minesLeft).c_str();
     gameLabel_->copy_label(lbl);
 }
