@@ -25,7 +25,7 @@ MainWindow::MainWindow(int width, int height)
         {"Edit", 0, 0, 0, FL_SUBMENU}, // Submenu
             {"Config", 0, (Fl_Callback *)&configCallback, this, FL_MENU_DIVIDER},
             {"Difficulty", 0, 0, 0, FL_SUBMENU}, // Sub-submenu
-                {"Begginer", 0,
+                {"Beginner", 0,
                     [](Fl_Widget *, void *p) {
                         auto *mainWindow = static_cast<MainWindow *>(p);
                         mainWindow->resetBoard(8, 8, 10);
