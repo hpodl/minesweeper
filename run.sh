@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir build
+mkdir -p build
 cmake -B build
 cd build
 rm ./Minesweeper
