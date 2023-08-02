@@ -100,6 +100,9 @@ int MinefieldUI::handle(int event) {
         if (*Fl::event_text() == 'r' || *Fl::event_text() == 'R') {
             reset(board_.width(), board_.height(), board_.mineCount());
         }
+        else if (*Fl::event_text() == 'q' || *Fl::event_text() == 'Q') {
+            parent()->hide();
+        }
         break;
     }
 
