@@ -27,8 +27,10 @@ class Field {
 
     /**
      * @brief Sets internal variable signalling that the field is revealed
+     *
+     * @return whether the field was revealed prior to the attempt
      */
-    void reveal();
+    bool reveal();
 
     /**
      * @brief Char representation of a field from a POV of a player
@@ -42,11 +44,12 @@ class Field {
      * mines
      */
     void incrementMineCount();
+
     /**
      * @brief Sets internal variable signalling that the field contains a mine
      */
     void setMine();
-    
+
     /**
      * @brief Returns a number of neighbouring mines
      */

@@ -15,9 +15,12 @@ bool Field::isMarked() const { return isMarked_; }
 
 void Field::setMarked(bool mark) { isMarked_ = mark; }
 
-void Field::reveal() {
+bool Field::reveal() {
+    bool wasRevealed = !isRevealed_;
     isRevealed_ = true;
     isMarked_ = false;
+
+    return wasRevealed;
 }
 
 char Field::charRepresentation() const {
