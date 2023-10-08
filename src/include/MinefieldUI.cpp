@@ -164,6 +164,8 @@ void MinefieldUI::_handleMouseClick() {
         break;
 
     case (FL_MIDDLE_MOUSE):
+        if (clickedField.isMarked())
+            break;
         for (auto revealedPoint : board_.chord(clickedPos)) {
             reveal(revealedPoint);
         }
