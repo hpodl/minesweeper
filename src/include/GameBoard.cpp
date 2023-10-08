@@ -44,7 +44,7 @@ void _FieldVector::populate(area_t mineCount) {
     recalculateNeighbours();
 }
 
-void _FieldVector::print() const{
+void _FieldVector::print() const {
     for (area_t i = 0; i < fields_.size(); ++i) {
         if (!(i % width_))
             std::cout << "\n";
@@ -102,7 +102,7 @@ std::vector<Point> GameBoard::reveal(Point point) {
     Field &field = board_.getField(point);
 
     std::vector<Point> revealed;
-    field.reveal();
+    revealedCount_ += field.reveal();
 
     if (field.getMineCount() == 0) {
         revealed = _revealEmpty(point);
@@ -116,7 +116,7 @@ std::vector<Point> GameBoard::_revealEmpty(Point point) {
     std::vector<Point> revealed;
     revealed.push_back(point);
     auto field = board_.getField(point);
-    field.reveal();
+    revealedCount_ += field.reveal();
 
     if (field.isMine()) {
         mineHit_ = true;
@@ -128,7 +128,7 @@ std::vector<Point> GameBoard::_revealEmpty(Point point) {
         Field &field = board_.getField(neighbourCoords);
         if (!field.isRevealed() & !field.isMarked()) {
             revealed.push_back(neighbourCoords);
-            field.reveal();
+            revealedCount_ += field.reveal();
             if (field.isMine()) {
                 mineHit_ = true;
             }
@@ -158,7 +158,7 @@ std::vector<Point> GameBoard::chord(Point point) {
         for (Point neighbourCoord : board_.neighbourCoords(point)) {
             auto &field = getField(neighbourCoord);
             if (!field.isMarked()) {
-                field.reveal();
+                revealedCount_ += field.reveal();
                 revealed.push_back(neighbourCoord);
             }
         }
@@ -171,15 +171,16 @@ void GameBoard::generate(
     board_ = _FieldVector(width, height, mineCount);
 }
 
-
 void GameBoard::toggleMark(Point coordinates) {
     auto &field = getField(coordinates);
     field.setMarked(!field.isMarked());
 
     field.isMarked() ? ++markCount_ : --markCount_;
+};
 
- };
-
+bool GameBoard::isWon() const {
+    return revealedCount_ + markCount_ == size() && !mineHit_;
+}
 bool GameBoard::isLost() const { return mineHit_; }
 dimension_t GameBoard::width() const { return board_.shape().x; };
 dimension_t GameBoard::height() const { return board_.shape().y; };

@@ -68,6 +68,8 @@ class _FieldVector {
 class GameBoard {
     _FieldVector board_;
     area_t markCount_ = 0;
+    area_t revealedCount_ = 0;
+    area_t correctMarkCount_= 0;
     bool mineHit_ = false;
 
     std::vector<Point> _revealEmpty(Point coordinates);
@@ -78,6 +80,7 @@ class GameBoard {
     GameBoard();
 
     bool isLost() const;
+    bool isWon() const;
 
     /**
      * @brief Reveals fields recursively. Returns a vector of revealed fields'
