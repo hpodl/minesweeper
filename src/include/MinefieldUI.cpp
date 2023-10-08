@@ -21,7 +21,7 @@ FieldButton::FieldButton(int x, int y, int w, int h, const char *L = 0)
 
 void FieldButton::setRevealedStyle(const char *representation) {
     box(FL_FLAT_BOX);
-    if(*representation == '0')
+    if (*representation == '0')
         label(" ");
     else
         copy_label(representation);
@@ -93,14 +93,13 @@ void MinefieldUI::reveal(Point point) {
 int MinefieldUI::handle(int event) {
     switch (event) {
     case FL_PUSH:
-        if (!isLost_)
+        if (!isLost_ && !board_.isWon())
             _handleMouseClick();
         break;
     case FL_KEYUP:
         if (*Fl::event_text() == 'r' || *Fl::event_text() == 'R') {
             reset(board_.width(), board_.height(), board_.mineCount());
-        }
-        else if (*Fl::event_text() == 'q' || *Fl::event_text() == 'Q') {
+        } else if (*Fl::event_text() == 'q' || *Fl::event_text() == 'Q') {
             parent()->hide();
         }
         break;
@@ -172,6 +171,14 @@ void MinefieldUI::_handleMouseClick() {
 
         break;
     }
+
+    // hacky
+    if (board_.isWon() && !isLost_) {
+        gameLabel_->copy_label("Win!");
+    } else if (isLost_) {
+        gameLabel_->copy_label("Lost!");
+    }
+    redraw(); // otherwise won't show if there's no other reason to redraw
 }
 
 void MinefieldUI::_updateMinesLeftLabel(const int minesLeft) {
