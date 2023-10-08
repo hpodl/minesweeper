@@ -55,8 +55,7 @@ void _FieldVector::print() const{
 }
 
 std::vector<Point> _FieldVector::neighbourCoords(Point point) {
-    // signed so it can be negative, int so it can store (max unsigned short) +
-    // 1
+    // signed so it can be negative, int so it can store (max unsigned short)+1
     std::vector<int> neighb_x{point.x - 1, point.x, point.x + 1};
     std::vector<int> neighb_y{point.y - 1, point.y, point.y + 1};
 
