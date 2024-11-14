@@ -180,8 +180,9 @@ void GameBoard::toggleMark(Point coordinates) {
 };
 
 bool GameBoard::isWon() const {
-    return revealedCount_ + markCount_ == size() && !mineHit_;
+    return revealedCount_ + markCount_ == size() && markCount_ == mineCount() && !mineHit_;
 }
+
 bool GameBoard::isLost() const { return mineHit_; }
 dimension_t GameBoard::width() const { return board_.shape().x; };
 dimension_t GameBoard::height() const { return board_.shape().y; };
