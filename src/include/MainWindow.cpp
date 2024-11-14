@@ -60,7 +60,7 @@ MainWindow::MainWindow(int width, int height)
 
     // short form for readability
     const int mp = minefield_padding;
-    minefield_ = new MinefieldUI(0 + mp, 0 + mp + menu_h, w(), h() - mp);
+    minefield_ = new MinefieldUI(0 + mp, 0 + mp + menu_h, w() - 2*mp, h() - 2*mp);
     minefield_->createMinefield(20, 20, 50);
 
     // resizes the window to account for actual minefield size
