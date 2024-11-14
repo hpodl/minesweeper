@@ -7,7 +7,7 @@ bool operator==(const Point& p1, const Point& p2) {
     return p1.x == p2.x && p1.y == p2.y;
 }
 
-class FieldVecTestable : public _FieldVector {
+class FieldVecTestable : public _FieldMatrix {
     void populate(std::vector<Point> mines) {
         for(auto point : mines) {
             getField(point).setMine();
@@ -41,7 +41,7 @@ TEST_CASE("GameBoard correctly reveals recursively.", "[GameBoard, reveal, recur
 
 
 TEST_CASE("neighbourCoords return valid coordinates", "[FieldVector, neighbourCoords]") {
-    auto fields = _FieldVector(20,20,0);
+    auto fields = _FieldMatrix(20,20,0);
     Point point(2,2);
     std::vector<Point> actualCoords {
         {1,1}, {1,2}, {1,3},
@@ -55,7 +55,7 @@ TEST_CASE("neighbourCoords return valid coordinates", "[FieldVector, neighbourCo
 }
 
 TEST_CASE("neighbourCoords return valid coordinates on the upper edge", "[FieldVector, neighbourCoords]") {
-    auto fields = _FieldVector(20,20,0);
+    auto fields = _FieldMatrix(20,20,0);
     Point point(0,2);
     std::vector<Point> actualCoords {
         {0,1}, {0,2}, {0,3},
@@ -70,7 +70,7 @@ TEST_CASE("neighbourCoords return valid coordinates on the upper edge", "[FieldV
 
 
 TEST_CASE("neighbourCoords return valid coordinates in the upper-left corner", "[FieldVector, neighbourCoords]") {
-    auto fields = _FieldVector(20,20,0);
+    auto fields = _FieldMatrix(20,20,0);
     Point point(0,0);
     std::vector<Point> actualCoords {
         {0,0}, {0,1},
@@ -83,7 +83,7 @@ TEST_CASE("neighbourCoords return valid coordinates in the upper-left corner", "
 }
 
 TEST_CASE("neighbourCoords return valid coordinates in the lower-right corner", "[FieldVector, neighbourCoords]") {
-    auto fields = _FieldVector(10, 12, 0);
+    auto fields = _FieldMatrix(10, 12, 0);
     Point point(9,11);
     std::vector<Point> actualCoords {
         {8, 10}, {9, 10},

@@ -11,7 +11,7 @@
  * Handles the basic functionality of creating a matrix of Fields and filling it
  * with mines
  */
-class _FieldVector {
+class _FieldMatrix {
     dimension_t width_, height_;
     area_t mineCount_;
     std::vector<Field> fields_;
@@ -19,7 +19,7 @@ class _FieldVector {
     void _updateNeighbours(Point);
 
   public:
-    _FieldVector(dimension_t, dimension_t, area_t);
+    _FieldMatrix(dimension_t, dimension_t, area_t);
 
     Field &getField(Point);
 
@@ -66,7 +66,7 @@ class _FieldVector {
  * flagging Fields
  */
 class GameBoard {
-    _FieldVector board_;
+    _FieldMatrix board_;
     area_t markCount_ = 0;
     area_t revealedCount_ = 0;
     area_t correctMarkCount_= 0;
@@ -76,7 +76,7 @@ class GameBoard {
 
   public:
     GameBoard(dimension_t width, dimension_t height, area_t mineCount);
-    GameBoard(_FieldVector board);
+    GameBoard(_FieldMatrix board);
     GameBoard();
 
     bool isLost() const;

@@ -10,12 +10,12 @@
 #include "Field.hh"
 #include "GameBoard.hh"
 
-_FieldVector::_FieldVector(dimension_t x, dimension_t y, area_t mineCount)
+_FieldMatrix::_FieldMatrix(dimension_t x, dimension_t y, area_t mineCount)
     : width_(x), height_(y), mineCount_(mineCount), fields_(x * y, Field()) {
     this->populate(mineCount);
 };
 
-Field &_FieldVector::getField(Point point) {
+Field &_FieldMatrix::getField(Point point) {
     if (point.x >= width_)
         throw std::out_of_range(
             fmt::format("Maximum width is {}, got {}.", width_, point.x));
@@ -27,9 +27,9 @@ Field &_FieldVector::getField(Point point) {
     return fields_[point.y * width_ + point.x];
 };
 
-area_t _FieldVector::size() const { return width_ * height_; }
+area_t _FieldMatrix::size() const { return width_ * height_; }
 
-void _FieldVector::populate(area_t mineCount) {
+void _FieldMatrix::populate(area_t mineCount) {
     int seed = std::chrono::system_clock::now().time_since_epoch().count();
 
     if (mineCount > size())
@@ -44,7 +44,7 @@ void _FieldVector::populate(area_t mineCount) {
     recalculateNeighbours();
 }
 
-void _FieldVector::print() const {
+void _FieldMatrix::print() const {
     for (area_t i = 0; i < fields_.size(); ++i) {
         if (!(i % width_))
             std::cout << "\n";
@@ -54,7 +54,7 @@ void _FieldVector::print() const {
     std::cout << '\n';
 }
 
-std::vector<Point> _FieldVector::neighbourCoords(Point point) {
+std::vector<Point> _FieldMatrix::neighbourCoords(Point point) {
     // signed so it can be negative, int so it can store (max unsigned short)+1
     std::vector<int> neighb_x{point.x - 1, point.x, point.x + 1};
     std::vector<int> neighb_y{point.y - 1, point.y, point.y + 1};
@@ -77,7 +77,7 @@ std::vector<Point> _FieldVector::neighbourCoords(Point point) {
     return neighbours;
 }
 
-void _FieldVector::_updateNeighbours(Point point) {
+void _FieldMatrix::_updateNeighbours(Point point) {
     if (!getField(point).isMine()) {
         return;
     }
@@ -87,7 +87,7 @@ void _FieldVector::_updateNeighbours(Point point) {
         [this](auto point) { this->getField(point).incrementMineCount(); });
 }
 
-void _FieldVector::recalculateNeighbours() {
+void _FieldMatrix::recalculateNeighbours() {
     for (dimension_t y = 0; y < height_; ++y)
         for (dimension_t x = 0; x < width_; ++x)
             _updateNeighbours(Point{x, y});
@@ -95,7 +95,7 @@ void _FieldVector::recalculateNeighbours() {
 
 GameBoard::GameBoard(dimension_t width, dimension_t height, area_t mineCount)
     : board_(width, height, mineCount) {}
-GameBoard::GameBoard(_FieldVector board) : board_(board) {}
+GameBoard::GameBoard(_FieldMatrix board) : board_(board) {}
 GameBoard::GameBoard() : board_(0, 0, 0){};
 
 std::vector<Point> GameBoard::reveal(Point point) {
@@ -168,7 +168,7 @@ std::vector<Point> GameBoard::chord(Point point) {
 
 void GameBoard::generate(
     dimension_t width, dimension_t height, area_t mineCount) {
-    board_ = _FieldVector(width, height, mineCount);
+    board_ = _FieldMatrix(width, height, mineCount);
 }
 
 void GameBoard::toggleMark(Point coordinates) {
