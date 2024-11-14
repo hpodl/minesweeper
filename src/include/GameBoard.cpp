@@ -36,6 +36,7 @@ void _FieldMatrix::populate(area_t mineCount) {
         throw std::out_of_range(fmt::format(
             "Maximum mine count is {}, got {}.", size(), mineCount));
 
+    // First we set first mineCount fields to mines, and then shuffle the entire vector
     std::for_each(fields_.begin(), (fields_.begin() + mineCount),
         [](auto &field) { field.setMine(); });
 
