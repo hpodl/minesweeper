@@ -22,7 +22,7 @@ Field &_FieldMatrix::getField(Point point) {
 
     else if (point.y >= height_)
         throw std::out_of_range(
-            fmt::format("Maximum width is {}, got {}.", width_, point.x));
+            fmt::format("Maximum height is {}, got {}.", height_, point.y));
 
     return fields_[point.y * width_ + point.x];
 };
