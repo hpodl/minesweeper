@@ -147,6 +147,13 @@ void MinefieldUI::_handleMouseClick() {
         if (!clickedField.isMarked() && !clickedField.isRevealed()) {
             reveal(clickedPos);
         }
+        // both mouse buttons pressed
+        else if (clickedField.isRevealed() &&
+                 (Fl::event_state() & FL_BUTTON3)) {
+            for (auto revealedPoint : board_.chord(clickedPos)) {
+                reveal(revealedPoint);
+            }
+        }
         break;
 
     case (FL_RIGHT_MOUSE):
