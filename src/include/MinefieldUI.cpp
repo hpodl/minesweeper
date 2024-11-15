@@ -142,17 +142,17 @@ void MinefieldUI::_handleMouseClick() {
     PField &clickedButton = _getButton(clickedPos);
     auto &clickedField = board_.getField(clickedPos);
 
+    auto eventState = Fl::event_state();
+
+    // if LMB and RMB are pressed at once, proceed as with middle click
+    if((eventState & FL_BUTTON1) && (Fl::event_state() & FL_BUTTON3)) {
+        mouseButton = FL_MIDDLE_MOUSE;
+    }
+
     switch (mouseButton) {
     case (FL_LEFT_MOUSE):
         if (!clickedField.isMarked() && !clickedField.isRevealed()) {
             reveal(clickedPos);
-        }
-        // both mouse buttons pressed
-        else if (clickedField.isRevealed() &&
-                 (Fl::event_state() & FL_BUTTON3)) {
-            for (auto revealedPoint : board_.chord(clickedPos)) {
-                reveal(revealedPoint);
-            }
         }
         break;
 
