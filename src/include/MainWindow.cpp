@@ -19,7 +19,7 @@ MainWindow::MainWindow(int width, int height)
     // clang-format off
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU}, // Submenu
-            {"Restart", 0, (Fl_Callback *)restartCallback, this, 0},
+            {"Restart", 0, (Fl_Callback *)restartCallback, this, FL_MENU_DIVIDER},
             {"Quit", 0, (Fl_Callback *)quitCallback, this, 0},
         {0}, // ends submenu
         
