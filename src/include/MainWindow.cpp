@@ -121,8 +121,34 @@ BoardConfigWindow::BoardConfigWindow(int x, int y, MainWindow *parent)
             int width = std::stoi(configWindow->widthInput_->value());
             int height = std::stoi(configWindow->heightInput_->value());
             int mineCount = std::stoi(configWindow->mineCountInput_->value());
-            configWindow->parentWindow_->resetBoard(width, height, mineCount);
-            configWindow->hide();
+
+            configWindow->widthInput_->color(FL_WHITE);
+            configWindow->heightInput_->color(FL_WHITE);
+            configWindow->mineCountInput_->color(FL_WHITE);
+
+            // check if inputs are logically correct, color them red if not
+            bool allCorrect = true;
+            if (width <= 0) {
+                allCorrect = false;
+                configWindow->widthInput_->color(FL_RED);
+            }
+            if (height <= 0) {
+                allCorrect = false;
+                configWindow->heightInput_->color(FL_RED);
+            }
+            // only check whether '<= width*height' if width and height are correct
+            if (mineCount < 0 || (allCorrect && mineCount > width * height)) {
+                allCorrect = false;
+                configWindow->mineCountInput_->color(FL_RED);
+            }
+
+            // if all inputs correct, configure and reset the board
+            if (allCorrect) {
+                configWindow->parentWindow_->resetBoard(width, height, mineCount);
+                configWindow->hide();
+            } else {
+                configWindow->redraw();
+            }
         },
         this);
 
