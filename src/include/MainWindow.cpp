@@ -20,6 +20,7 @@ MainWindow::MainWindow(int width, int height)
     Fl_Menu_Item menu_items[] = {
         {"File", 0, 0, 0, FL_SUBMENU}, // Submenu
             {"Restart", 0, (Fl_Callback *)restartCallback, this, 0},
+            {"Quit", 0, (Fl_Callback *)quitCallback, this, 0},
         {0}, // ends submenu
         
         {"Edit", 0, 0, 0, FL_SUBMENU}, // Submenu
@@ -67,6 +68,11 @@ MainWindow::MainWindow(int width, int height)
     const int minefieldSize = minefield_->getSideLen();
     resize(0, 0, minefieldSize + 2 * mp, minefieldSize + menu_h + 2 * mp);
 };
+
+void MainWindow::quitCallback(Fl_Widget *, void *data) {
+    auto window = static_cast<MainWindow *>(data);
+    window->hide();
+}
 
 void MainWindow::restartCallback(Fl_Widget *, void *data) {
     auto window = static_cast<MainWindow *>(data);

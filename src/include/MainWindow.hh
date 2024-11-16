@@ -15,6 +15,7 @@ class MainWindow : public Fl_Double_Window {
 
   public:
     MainWindow(int width, int height);
+    static void quitCallback(Fl_Widget *, void *data);
     static void restartCallback(Fl_Widget *, void *data);
     static void configCallback(Fl_Widget *, void *data);
     static void borderCallback(Fl_Widget *, void *data);
